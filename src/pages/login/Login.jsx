@@ -1,31 +1,218 @@
-import "./login.scss";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/authentification/AuthContext";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+  Paper,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { CardCover } from "@mui/joy";
+import { LoadingButton } from "@mui/lab";
+import { loginCall } from "../../api";
 
-const login = () => {
+const Login = () => {
+  const navigate = useNavigate();
+  const { error, isFetching, dispatch } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClick = (e) => {
+    e.preventDefault();
+    loginCall(
+      { email: e.target[0].value, password: e.target[1].value },
+      dispatch
+    );
+    if (!error) navigate("/");
+  };
+
+  const handleClickShowPassword = () =>
+    setShowPassword((prevState) => !prevState);
   return (
-    <div className="login">
-      <div className="card">
-        <div className="left">
-          <h1>Hello World</h1>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati
-            nobis nesciunt dignissimos perferendis non culpa, temporibus unde
-            quia necessitatibus vero, ratione officiis eos iure ex, repudiandae
-            modi! Omnis, voluptas sunt!
-          </p>
-          <span>Don't you have an account ?</span>
-          <button>Register</button>
-        </div>
-        <div className="right">
-          <h1>Login</h1>
-          <form>
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-            <button>Login</button>
-          </form>
-        </div>
-      </div>
-    </div>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgb(193, 190, 255)",
+      }}
+    >
+      <Card
+        component="ul"
+        sx={{
+          minHeight: { xs: "100%", sm: "100%", md: "100%", lg: "600px" },
+          width: { xs: "100%", sm: "100%", md: "100%", lg: "50%" },
+          display: "flex",
+          borderRadius: "10px",
+          overflow: "hidden",
+          p: 0,
+        }}
+      >
+        <Card
+          component="li"
+          sx={{
+            position: "relative",
+            flex: "1",
+            borderRadius: "0",
+          }}
+        >
+          <CardCover>
+            <Paper
+              sx={{
+                background: `linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
+                url(
+                  "https://images.pexels.com/photos/3228727/pexels-photo-3228727.jpeg?auto=compress&cs=tinysrgb&w=160"
+                ) center`,
+                backgroundSize: "cover",
+              }}
+            />
+          </CardCover>
+          <CardContent
+            sx={{
+              position: "absolute",
+              p: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              color: "white",
+              ml: "15px",
+            }}
+          >
+            <Typography
+              variant={"h2"}
+              component={"h1"}
+              fontWeight={"bold"}
+              mt={"70px"}
+              mb={"70px"}
+            >
+              FACEBOOK CLONE
+            </Typography>
+            <Typography component={"p"} mb={"90px"}>
+              With Facebook, share and stay in touch with those around you.
+            </Typography>
+            <Typography component={"span"} fontSize={"14px"} mb={"10px"}>
+              Don't you have an account ?
+            </Typography>
+            <Link to="/register">
+              <Button
+                variant="contained"
+                sx={{
+                  width: "50%",
+                  color: "rebeccapurple",
+                  bgcolor: "white",
+                  border: "none",
+                  "&:hover": {
+                    backgroundColor: "rebeccapurple",
+                    color: "white",
+                  },
+                }}
+              >
+                register
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+        <Card
+          component="li"
+          sx={{
+            flex: "1",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "90px",
+            borderRadius: "0",
+          }}
+        >
+          <Typography
+            variant="h4"
+            component={"h1"}
+            color={"#555"}
+            fontWeight={"bold"}
+            mx={"20px"}
+            mb={"35px"}
+          >
+            Login
+          </Typography>
+          <Box
+            onSubmit={handleClick}
+            component={"form"}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "30px",
+              mx: "20px",
+            }}
+          >
+            <TextField
+              type="email"
+              required
+              placeholder="Email"
+              variant="standard"
+              error={error}
+              label={error ? "Error" : null}
+              helperText={error ? "Incorrect entry." : null}
+              inputProps={{ minLength: "3", maxLength: "320" }}
+              sx={{
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "rebeccapurple",
+                },
+              }}
+            />
+            <TextField
+              type={showPassword ? "text" : "password"}
+              required
+              inputProps={{ minLength: "8" }}
+              placeholder="password"
+              variant="standard"
+              error={error}
+              label={error ? "Error" : null}
+              helperText={error ? "Incorrect entry." : null}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "rebeccapurple",
+                },
+              }}
+            />
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              sx={{
+                width: "50%",
+                color: "white",
+                bgcolor: "rebeccapurple",
+                border: "none",
+                "&:hover": {
+                  backgroundColor: "white",
+                  color: "rebeccapurple",
+                },
+                ml: "20px",
+              }}
+              loading={isFetching}
+            >
+              <Typography conponent={"span"}>login</Typography>
+            </LoadingButton>
+          </Box>
+        </Card>
+      </Card>
+    </Box>
   );
 };
-
-export default login;
+export default Login;

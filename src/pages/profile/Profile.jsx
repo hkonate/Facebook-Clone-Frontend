@@ -1,8 +1,7 @@
-rafce;
-rafce;
-import "./profile.scss";
+import { Box } from "@mui/material";
+
 const Profile = () => {
-  return <div>Profile</div>;
+  return <Box flex="4">Profile</Box>;
 };
 
 export default Profile;
