@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import axios from "axios";
+import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authentification/AuthContext";
 import {
@@ -21,6 +22,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { error, isFetching, dispatch } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const emailRef = useRef();
   const handleClick = (e) => {
     e.preventDefault();
     loginCall(
@@ -32,6 +34,16 @@ const Login = () => {
 
   const handleClickShowPassword = () =>
     setShowPassword((prevState) => !prevState);
+
+  const handlePassword = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/password/Reset",
+        { email: emailRef.current.children[0].children[0].value }
+      );
+      navigate(`/newPassword/${data.data._id}`);
+    } catch (error) {}
+  };
   return (
     <Box
       sx={{
@@ -151,6 +163,7 @@ const Login = () => {
             <TextField
               type="email"
               required
+              ref={emailRef}
               placeholder="Email"
               variant="standard"
               error={error}
@@ -203,12 +216,22 @@ const Login = () => {
                   backgroundColor: "white",
                   color: "rebeccapurple",
                 },
-                ml: "20px",
               }}
               loading={isFetching}
             >
               <Typography conponent={"span"}>login</Typography>
             </LoadingButton>
+            <Box onClick={handlePassword} w={"50px"} sx={{ cursor: "pointer" }}>
+              <Typography
+                component={"span"}
+                sx={{
+                  color: "#1976d2",
+                  borderBottom: "1px solid #1976d2",
+                }}
+              >
+                You forgot your password ?
+              </Typography>
+            </Box>
           </Box>
         </Card>
       </Card>

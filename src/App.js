@@ -13,7 +13,6 @@ import RightBar from "./components/RightBar.jsx";
 import Register from "./pages/register/Register.jsx";
 import Home from "./pages/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
-import ForgottenPassword from "./pages/forgottenPassword/ForgottenPassword.jsx";
 import NewPassword from "./pages/newPassword/NewPassword.jsx";
 import VerifyAccount from "./pages/verifiyAccount/VerifyAccount.jsx";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
@@ -81,11 +80,7 @@ function App() {
       element: <VerifyAccount />,
     },
     {
-      path: "/forgotPassword",
-      element: <ForgottenPassword />,
-    },
-    {
-      path: "/newPassword",
+      path: "/newPassword/:id",
       element: <NewPassword />,
     },
   ]);
