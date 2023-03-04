@@ -9,7 +9,6 @@ export const loginCall = async ({ email, password }, dispatch) => {
     });
     dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
   } catch (err) {
-    console.log(err.response.data);
     dispatch({ type: "LOGIN_FAILURE", payload: err });
   }
 };

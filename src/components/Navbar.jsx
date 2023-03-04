@@ -1,3 +1,5 @@
+import { AuthContext } from "../context/authentification/AuthContext";
+import axios from "axios";
 import { Mail, Notifications, Facebook } from "@mui/icons-material";
 import {
   AppBar,
@@ -12,7 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -46,6 +49,21 @@ const UserBox = styled(Box)(({ theme }) => ({
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      console.log(user?.data?.authTokens[0][0].authToken);
+      const res = await axios.delete("http://localhost:3000/user/logout");
+      console.log("deelete");
+      if (res.data) {
+        navigate("/login");
+        localStorage.removeItem("user");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <AppBar position="sticky">
       <StyledToolbar>
@@ -93,7 +111,7 @@ const Navbar = () => {
       >
         <MenuItem>Profile</MenuItem>
         <MenuItem>My account</MenuItem>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </AppBar>
   );

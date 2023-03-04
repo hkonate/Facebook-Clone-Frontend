@@ -1,7 +1,7 @@
+import axios from "axios";
+import React, { useContext, useRef, useState } from "react";
 import {
   Avatar,
-  Button,
-  ButtonGroup,
   Fab,
   Modal,
   Stack,
@@ -10,16 +10,16 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { LoadingButton } from "@mui/lab";
 import {
   Add as AddIcon,
-  DateRange,
   EmojiEmotions,
   Image,
   PersonAdd,
   VideoCameraBack,
 } from "@mui/icons-material";
 import { Box } from "@mui/system";
+import { AuthContext } from "../context/authentification/AuthContext";
 
 const SytledModal = styled(Modal)({
   display: "flex",
@@ -36,11 +36,46 @@ const UserBox = styled(Box)({
 
 const Add = () => {
   const [open, setOpen] = useState(false);
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  const desc = useRef();
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      setLoading(true);
+      console.log(e.target[2], file, "ot");
+      const formdata = new FormData();
+      formdata.append("desc", desc.current.children[0].childNodes[0].value);
+      formdata.append("img", file);
+      const res = await axios.post(
+        "http://localhost:3000/post/create",
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.data.authTokens[0][0].authToken}`,
+          },
+        }
+      );
+      console.log(res?.data, "tt");
+      setOpen(false);
+      setLoading(false);
+    } catch (error) {
+      console.log(error.response, error.message, error);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Tooltip
         onClick={(e) => setOpen(true)}
-        title="Delete"
+        title="Create Post"
         sx={{
           position: "fixed",
           bottom: 20,
@@ -53,13 +88,17 @@ const Add = () => {
       </Tooltip>
       <SytledModal
         open={open}
-        onClose={(e) => setOpen(false)}
+        onClose={(e) => {
+          setOpen(false);
+          setFile(null);
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box
+          onBlur={() => (desc.current.value = null)}
           width={400}
-          height={300}
+          height={"auto"}
           bgcolor={"background.default"}
           color={"text.primary"}
           p={3}
@@ -77,30 +116,76 @@ const Add = () => {
               John Doe
             </Typography>
           </UserBox>
-          <TextField
-            sx={{ width: "100%" }}
-            id="standard-multiline-static"
-            multiline
-            rows={3}
-            placeholder="What's on your mind?"
-            variant="standard"
-          />
-          <Stack direction="row" gap={1} mt={2} mb={3}>
-            <EmojiEmotions color="primary" />
-            <Image color="secondary" />
-            <VideoCameraBack color="success" />
-            <PersonAdd color="error" />
-          </Stack>
-          <ButtonGroup
-            fullWidth
-            variant="contained"
-            aria-label="outlined primary button group"
+          {file && (
+            <Avatar
+              sx={{ width: "100%", height: "150px", borderRadius: "0px" }}
+              src={URL.createObjectURL(file)}
+              alt="img"
+            />
+          )}
+          <Box
+            component={"form"}
+            onSubmit={(e) => {
+              console.log("submit");
+              handleSubmit(e);
+            }}
           >
-            <Button>Post</Button>
-            <Button sx={{ width: "100px" }}>
-              <DateRange />
-            </Button>
-          </ButtonGroup>
+            <TextField
+              onChange={() => {
+                if (error) setError((prev) => !prev);
+              }}
+              ref={desc}
+              sx={{ width: "100%" }}
+              id="standard-multiline-static"
+              multiline
+              required
+              error={error}
+              helperText={error ? "Incorrect entry." : null}
+              rows={3}
+              placeholder="What's on your mind?"
+              variant="standard"
+            />
+            <Stack direction="row" gap={1} mt={2} mb={3}>
+              <EmojiEmotions color="primary" />
+              <Box
+                component={"label"}
+                htmlFor="file"
+                sx={{ cursor: "pointer" }}
+              >
+                <Image color="secondary" />
+                <Box
+                  component={"input"}
+                  type="file"
+                  id="file"
+                  accept=".png, .jpeg,.jpg"
+                  sx={{ display: "none" }}
+                  onChange={(e) => {
+                    console.log(
+                      e.target.files[0],
+                      "file",
+                      typeof e.target.files[0]
+                    );
+                    setFile(e.target.files[0]);
+                  }}
+                />
+              </Box>
+              <VideoCameraBack color="success" />
+              <PersonAdd color="error" />
+            </Stack>
+            <LoadingButton
+              onClick={() => {
+                if (!desc.current.children[0].childNodes[0].value && !error)
+                  setError(true);
+              }}
+              loading={loading}
+              variant="contained"
+              aria-label="outlined primary"
+              fullWidth
+              type="submit"
+            >
+              Post
+            </LoadingButton>
+          </Box>
         </Box>
       </SytledModal>
     </>

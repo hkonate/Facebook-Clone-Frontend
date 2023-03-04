@@ -1,9 +1,4 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  Outlet,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Login from "./pages/login/Login.jsx";
@@ -17,7 +12,9 @@ import NewPassword from "./pages/newPassword/NewPassword.jsx";
 import VerifyAccount from "./pages/verifiyAccount/VerifyAccount.jsx";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import Add from "./components/Add.jsx";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "./context/authentification/AuthContext";
+
 function App() {
   const [mode, setMode] = useState("light");
 
@@ -27,8 +24,8 @@ function App() {
     },
   });
   //if user did not logout redirect to home no need to log again
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-
+  const { user } = useContext(AuthContext);
+  console.log("app", user);
   const Layout = () => {
     return (
       <Box bgcolor={"background.default"} color={"text.primary"}>
@@ -44,7 +41,7 @@ function App() {
   };
 
   const ProtectedRoute = ({ children }) => {
-    if (!currentUser) return <Navigate to="/login" />;
+    if (!user) return <Login />;
     return children;
   };
 
@@ -61,11 +58,11 @@ function App() {
           path: "/",
           element: <Home />,
         },
-        {
-          path: "/profile/:id",
-          element: <Profile />,
-        },
       ],
+    },
+    {
+      path: "/profile/:id",
+      element: <Profile />,
     },
     {
       path: "/login",

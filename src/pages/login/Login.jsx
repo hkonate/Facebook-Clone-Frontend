@@ -29,7 +29,6 @@ const Login = () => {
       { email: e.target[0].value, password: e.target[1].value },
       dispatch
     );
-    if (!error) navigate("/");
   };
 
   const handleClickShowPassword = () =>
