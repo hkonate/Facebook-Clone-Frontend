@@ -54,14 +54,18 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       console.log(user?.data?.authTokens[0][0].authToken);
-      const res = await axios.delete("http://localhost:3000/user/logout");
-      console.log("deelete");
-      if (res.data) {
-        navigate("/login");
-        localStorage.removeItem("user");
-      }
+      await axios.delete("http://localhost:3000/user/logout", {
+        headers: {
+          Authorization: `Bearer ${user?.data?.authTokens[0][0].authToken}`,
+        },
+      });
+
+      setOpen((prev) => !prev);
+      navigate("/login");
+      localStorage.removeItem("user");
     } catch (error) {
       console.log(error);
+      setOpen((prev) => !prev);
     }
   };
   return (
@@ -87,7 +91,7 @@ const Navbar = () => {
             onClick={(e) => setOpen(true)}
           />
         </Icons>
-        <UserBox onClick={(e) => setOpen(true)}>
+        <UserBox onClick={() => setOpen(true)}>
           <Avatar
             sx={{ width: 30, height: 30 }}
             src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
@@ -96,10 +100,8 @@ const Navbar = () => {
         </UserBox>
       </StyledToolbar>
       <Menu
-        id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
         open={open}
-        onClose={(e) => setOpen(false)}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",
@@ -109,8 +111,20 @@ const Navbar = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>My account</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setOpen((prev) => !prev);
+          }}
+        >
+          Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setOpen((prev) => !prev);
+          }}
+        >
+          My account
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </AppBar>

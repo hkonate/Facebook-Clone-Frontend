@@ -1,65 +1,102 @@
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
+import { AuthContext } from "../context/authentification/AuthContext";
 import { format } from "timeago.js";
+import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
 import {
   Avatar,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Menu,
+  MenuItem,
   CardMedia,
   Checkbox,
   IconButton,
   Typography,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/authentification/AuthContext";
-const Post = ({ post }) => {
+
+const Post = ({ post, setPosts, posts }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const { user: currentUser } = useContext(AuthContext);
   const [like, setLike] = useState(post ? post.likes.length : 0);
   const [isLiked, setIsLiked] = useState(post?.likes.includes(currentUser._id));
   const [user, setUser] = useState(null);
+
   useEffect(() => {
+    //fecth user's informations for each post
     const fetchUser = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/user/${post?.userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
-            },
-          }
-        );
-        console.log(post);
-        if (res.data) {
+        //if the current user is the owner of this post state it
+        if (currentUser.data._id === post?.userId) setUser(currentUser.data);
+        //else if post's user info is already in user state and state does exist do not fecth again otherwise fecth
+        else if ((user && user._id !== post?.userId) || !user) {
+          const res = await axios.get(
+            `http://localhost:3000/user/${post?.userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+              },
+            }
+          );
           setUser(res.data.data);
-          setIsLiked(post.likes.length);
         }
+        setIsLiked(post.likes.length);
       } catch (error) {}
     };
+    //if we got a post fetch for user's info
     if (post) fetchUser();
   }, [post?.userId]);
 
+  //if a post is not like, like it otherwise dislike
   const likeHandler = async () => {
     try {
-      console.log("coco");
       await axios.post(`http://localhost:3000/post/affinities/${post?._id}`, {
         headers: {
           Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
         },
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
 
+  //send request to delete post
+  const requestDeletePost = async (postId) => {
+    try {
+      await axios.delete(`http://localhost:3000/post/delete/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+        },
+      });
+
+      //hide menu and render new Post list
+      setAnchorEl(null);
+      setPosts(posts.filter((el) => el._id !== postId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //display menu on click
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  //hide menu on close
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  //capitalize users name
   const capitalizeFirstname =
     user?.firstname[0]?.toUpperCase() + user?.firstname?.slice(1);
   const capitalizeLastname =
     user?.lastname[0]?.toUpperCase() + user?.lastname?.slice(1);
-  console.log(user, "letter");
+
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
@@ -77,9 +114,28 @@ const Post = ({ post }) => {
           )
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVert />
-          </IconButton>
+          <>
+            <IconButton onClick={(e) => handleClick(e)} aria-label="more">
+              <MoreVert />
+            </IconButton>
+            <Menu
+              open={open}
+              onClose={handleClose}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <MenuItem
+                onClick={() => {
+                  requestDeletePost(post?._id);
+                }}
+              >
+                Delete
+              </MenuItem>
+            </Menu>
+          </>
         }
         title={user && capitalizeFirstname + " " + capitalizeLastname}
         subheader={format(post?.createdAt)}

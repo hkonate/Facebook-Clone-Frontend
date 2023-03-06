@@ -1,7 +1,8 @@
-import axios from "axios";
 import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authentification/AuthContext";
+import { loginCall } from "../../api";
+import axios from "axios";
 import {
   Box,
   Card,
@@ -16,13 +17,14 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { CardCover } from "@mui/joy";
 import { LoadingButton } from "@mui/lab";
-import { loginCall } from "../../api";
 
 const Login = () => {
   const navigate = useNavigate();
   const { error, isFetching, dispatch } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const emailRef = useRef();
+
+  //handle log in
   const handleClick = (e) => {
     e.preventDefault();
     loginCall(
@@ -31,9 +33,11 @@ const Login = () => {
     );
   };
 
+  //hide or show password
   const handleClickShowPassword = () =>
     setShowPassword((prevState) => !prevState);
 
+  //reset password and navigate to newPassword page
   const handlePassword = async () => {
     try {
       const { data } = await axios.post(

@@ -18,39 +18,55 @@ import { CardCover } from "@mui/joy";
 import { LoadingButton } from "@mui/lab";
 
 const Register = () => {
+  //states
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [file, setFile] = useState(null);
+  const [id, setId] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleClick = async (e) => {
-    //Start loading
+  //handle all submit information
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsFetching(true);
-    if (error) setError(false);
+    //prevent page to refresh and start loading
     try {
+      setIsFetching(true);
+      if (error) setError(false);
       //checking if passwords are the same
       if (e.target[7].value !== e.target[9].value)
         throw new Error("Passwords are not the same");
-      //pre-register the user
-      const { data } = await axios.post("http://localhost:3000/register", {
-        firstname: e.target[0].value,
-        lastname: e.target[1].value,
-        email: e.target[2].value,
-        age: e.target[4].value,
-        city: e.target[5].value,
-        from: e.target[6].value,
-        password: e.target[7].value,
-        confirmPassword: e.target[9].value,
-        profilePicture: file,
+
+      //append all user info in formdata
+      const formdata = new FormData();
+
+      formdata.append("firstname", e.target[0].value);
+      formdata.append("lastname", e.target[1].value);
+      formdata.append("email", e.target[2].value);
+      formdata.append("age", e.target[4].value);
+      formdata.append("city", e.target[5].value);
+      formdata.append("from", e.target[6].value);
+      formdata.append("password", e.target[7].value);
+      formdata.append("confirmPassword", e.target[9].value);
+      formdata.append("img", e.target[3].files[0]);
+
+      //send formdata info in order to pre-register user
+      const res = await axios.post("http://localhost:3000/register", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      //user has been pre-register and mail of verification has been sent move to verificationAcount page
-      setIsFetching(false);
-      navigate(`/verifyAccount/${data.data._id}`);
+
+      //user has been pre-register and mail of verification has been sent, end loading and move to verificationAcount page
+      if (res) {
+        setId(res.data.data._id);
+        setIsFetching(false);
+      }
     } catch (error) {
+      console.log(error);
+      //set Error in order to signal under some fields and stop loading
       setError(true);
       setIsFetching(false);
     }
@@ -60,6 +76,7 @@ const Register = () => {
   const handleClickShowPassword = () =>
     setShowPassword((prevState) => !prevState);
 
+  //handle if confirm passwords are show or not
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((prevState) => !prevState);
 
@@ -173,8 +190,11 @@ const Register = () => {
             Register
           </Typography>
           <Box
-            onSubmit={handleClick}
             component={"form"}
+            onSubmit={(event) => {
+              handleSubmit(event);
+              if (id) navigate(`/verifyAccount/${id}`);
+            }}
             sx={{
               display: "flex",
               flexDirection: "column",

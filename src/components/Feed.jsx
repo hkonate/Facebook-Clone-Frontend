@@ -19,16 +19,14 @@ const Feed = () => {
 
   const { user } = useContext(AuthContext);
   useEffect(() => {
-    console.log("step Feed");
     setIsLoading(true);
     const fetchPosts = async () => {
-      console.log("step feedd 2");
       const res = await axios.get("http://localhost:3000/feed", {
         headers: {
           Authorization: `Bearer ${user?.data?.authTokens[0][0].authToken}`,
         },
       });
-      console.log("lpm");
+
       if (res.data.data.length > 1) {
         setPosts(
           res?.data?.data.sort((p1, p2) => {
@@ -39,10 +37,9 @@ const Feed = () => {
         setPosts([res?.data?.data]);
       }
       setIsLoading(false);
-      console.log(res.data, "step fecth");
     };
     if (user) fetchPosts();
-  }, [user.data._id, user?.data?.authTokens]);
+  }, [user.data._id, user?.data?.authTokens, user]);
 
   return (
     <Box
@@ -134,7 +131,14 @@ const Feed = () => {
         </Typography>
       ) : (
         posts?.map((post) => {
-          return <Post key={post?._id} post={post} />;
+          return (
+            <Post
+              key={post?._id}
+              post={post}
+              setPosts={setPosts}
+              posts={posts}
+            />
+          );
         })
       )}
     </Box>

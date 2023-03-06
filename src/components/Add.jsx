@@ -35,6 +35,7 @@ const UserBox = styled(Box)({
 });
 
 const Add = () => {
+  //states
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [error, setError] = useState(false);
@@ -46,27 +47,29 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     try {
+      //prevent page to refresh and start loading
       e.preventDefault();
       setLoading(true);
-      console.log(e.target[2], file, "ot");
+
       const formdata = new FormData();
+
+      //append all post info in formdata
       formdata.append("desc", desc.current.children[0].childNodes[0].value);
       formdata.append("img", file);
-      const res = await axios.post(
-        "http://localhost:3000/post/create",
-        formdata,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${user.data.authTokens[0][0].authToken}`,
-          },
-        }
-      );
-      console.log(res?.data, "tt");
+
+      //create new post
+      await axios.post("http://localhost:3000/post/create", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.data.authTokens[0][0].authToken}`,
+        },
+      });
+
+      //close post modal and stop enable submit btn
       setOpen(false);
       setLoading(false);
     } catch (error) {
-      console.log(error.response, error.message, error);
+      //in case is error enable submit btn again
       setLoading(false);
     }
   };
