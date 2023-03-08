@@ -11,7 +11,6 @@ import Profile from "./pages/profile/Profile.jsx";
 import NewPassword from "./pages/newPassword/NewPassword.jsx";
 import VerifyAccount from "./pages/verifiyAccount/VerifyAccount.jsx";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
-import Add from "./components/Add.jsx";
 import { useState, useContext } from "react";
 import { AuthContext } from "./context/authentification/AuthContext";
 
@@ -35,7 +34,6 @@ function App() {
           <Outlet />
           <RightBar />
         </Box>
-        <Add />
       </Box>
     );
   };

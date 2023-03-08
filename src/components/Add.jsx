@@ -34,7 +34,7 @@ const UserBox = styled(Box)({
   marginBottom: "20px",
 });
 
-const Add = () => {
+const Add = ({ posts, setPosts }) => {
   //states
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
@@ -58,13 +58,19 @@ const Add = () => {
       formdata.append("img", file);
 
       //create new post
-      await axios.post("http://localhost:3000/post/create", formdata, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${user.data.authTokens[0][0].authToken}`,
-        },
-      });
-
+      const res = await axios.post(
+        "http://localhost:3000/post/create",
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.data.authTokens[0][0].authToken}`,
+          },
+        }
+      );
+      const newTab = [res.data.data, ...posts];
+      console.log(newTab, "newTab");
+      setPosts(newTab);
       //close post modal and stop enable submit btn
       setOpen(false);
       setLoading(false);
@@ -73,6 +79,12 @@ const Add = () => {
       setLoading(false);
     }
   };
+
+  //capitalize users name
+  const capitalizeFirstname =
+    user?.data?.firstname[0]?.toUpperCase() + user?.data?.firstname?.slice(1);
+  const capitalizeLastname =
+    user?.data?.lastname[0]?.toUpperCase() + user?.data?.lastname?.slice(1);
 
   return (
     <>
@@ -91,9 +103,10 @@ const Add = () => {
       </Tooltip>
       <SytledModal
         open={open}
-        onClose={(e) => {
+        onClose={() => {
           setOpen(false);
           setFile(null);
+          desc.current.value = null;
         }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -112,11 +125,11 @@ const Add = () => {
           </Typography>
           <UserBox>
             <Avatar
-              src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              src={user?.data?.profilePicture}
               sx={{ width: 30, height: 30 }}
             />
             <Typography fontWeight={500} variant="span">
-              John Doe
+              {capitalizeFirstname + " " + capitalizeLastname}
             </Typography>
           </UserBox>
           {file && (
@@ -163,11 +176,6 @@ const Add = () => {
                   accept=".png, .jpeg,.jpg"
                   sx={{ display: "none" }}
                   onChange={(e) => {
-                    console.log(
-                      e.target.files[0],
-                      "file",
-                      typeof e.target.files[0]
-                    );
                     setFile(e.target.files[0]);
                   }}
                 />

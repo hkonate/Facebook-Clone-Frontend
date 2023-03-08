@@ -22,7 +22,6 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [file, setFile] = useState(null);
-  const [id, setId] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(false);
 
@@ -34,11 +33,17 @@ const Register = () => {
     //prevent page to refresh and start loading
     try {
       setIsFetching(true);
-      if (error) setError(false);
+      if (error) setError((prev) => !prev);
       //checking if passwords are the same
       if (e.target[7].value !== e.target[9].value)
         throw new Error("Passwords are not the same");
-
+      const fileSize = e.target[3].files[0].size; // file size in bytes
+      const maxSize = 1024 * 1024;
+      if (fileSize > maxSize) {
+        alert("File size exceeds the maximum limit of 1 MB");
+        setIsFetching((prev) => !prev);
+        return;
+      }
       //append all user info in formdata
       const formdata = new FormData();
 
@@ -60,12 +65,9 @@ const Register = () => {
       });
 
       //user has been pre-register and mail of verification has been sent, end loading and move to verificationAcount page
-      if (res) {
-        setId(res.data.data._id);
-        setIsFetching(false);
-      }
+      setIsFetching((prev) => !prev);
+      navigate(`/verifyAccount/${res.data.data._id}`);
     } catch (error) {
-      console.log(error);
       //set Error in order to signal under some fields and stop loading
       setError(true);
       setIsFetching(false);
@@ -193,7 +195,6 @@ const Register = () => {
             component={"form"}
             onSubmit={(event) => {
               handleSubmit(event);
-              if (id) navigate(`/verifyAccount/${id}`);
             }}
             sx={{
               display: "flex",
@@ -356,7 +357,7 @@ const Register = () => {
                   </InputAdornment>
                 ),
               }}
-              helperText={error ? "Incorrect entry." : null}
+              helperText={error && "Incorrect entry."}
               sx={{
                 "& .MuiInput-underline:after": {
                   borderBottomColor: "rebeccapurple",

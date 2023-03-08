@@ -20,8 +20,10 @@ import {
 const Post = ({ post, setPosts, posts }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { user: currentUser } = useContext(AuthContext);
-  const [like, setLike] = useState(post ? post.likes.length : 0);
-  const [isLiked, setIsLiked] = useState(post?.likes.includes(currentUser._id));
+  const [like, setLike] = useState(post ? post?.likes?.length : 0);
+  const [isLiked, setIsLiked] = useState(
+    post?.likes?.includes(currentUser._id)
+  );
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const Post = ({ post, setPosts, posts }) => {
           );
           setUser(res.data.data);
         }
-        setIsLiked(post.likes.length);
+        setIsLiked(post?.likes?.length);
       } catch (error) {}
     };
     //if we got a post fetch for user's info
@@ -108,14 +110,21 @@ const Post = ({ post, setPosts, posts }) => {
               aria-label="recipe"
             />
           ) : (
-            <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-              {"S"}
+            <Avatar
+              sx={{ bgcolor: "red", textTransform: "uppercase" }}
+              aria-label="recipe"
+            >
+              {user?.firstname[0]}
             </Avatar>
           )
         }
         action={
           <>
-            <IconButton onClick={(e) => handleClick(e)} aria-label="more">
+            <IconButton
+              disabled={post?.userId !== currentUser?.data?._id}
+              onClick={(e) => handleClick(e)}
+              aria-label="more"
+            >
               <MoreVert />
             </IconButton>
             <Menu
@@ -145,7 +154,7 @@ const Post = ({ post, setPosts, posts }) => {
         height="20%"
         image={
           post?.img
-            ? process.env.PUBLIC_URL + "/images/" + post?.img
+            ? post?.img
             : "https://images.pexels.com/photos/4534200/pexels-photo-4534200.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
         }
         alt={post?._id}
@@ -168,7 +177,7 @@ const Post = ({ post, setPosts, posts }) => {
         </IconButton>
         <CardContent sx={{ mt: "5px" }}>
           <Typography variant="body2" color="text.secondary" fontSize={"16px"}>
-            {like + (post?.likes.length > 0 ? " Likes" : " Like")}
+            {like + (post?.likes?.length > 0 ? " Likes" : " Like")}
           </Typography>
         </CardContent>
       </CardActions>

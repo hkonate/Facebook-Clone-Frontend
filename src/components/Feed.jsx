@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import Post from "./Post";
 import axios from "axios";
-
+import Add from "./Add";
 import { AuthContext } from "../context/authentification/AuthContext";
 
 const Feed = () => {
@@ -141,6 +141,7 @@ const Feed = () => {
           );
         })
       )}
+      <Add posts={posts} setPosts={setPosts} />
     </Box>
   );
 };

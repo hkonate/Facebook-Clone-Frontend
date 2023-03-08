@@ -31,6 +31,7 @@ const Login = () => {
       { email: e.target[0].value, password: e.target[1].value },
       dispatch
     );
+    navigate("/");
   };
 
   //hide or show password

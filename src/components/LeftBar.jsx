@@ -18,15 +18,19 @@ import {
   ListItemText,
   Switch,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/authentification/AuthContext";
 
 const LeftBar = ({ mode, setMode }) => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   return (
     <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
       <Box position="fixed">
         <List>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#home">
+            <ListItemButton>
               <ListItemIcon>
                 <Home />
               </ListItemIcon>
@@ -34,7 +38,7 @@ const LeftBar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton>
               <ListItemIcon>
                 <Article />
               </ListItemIcon>
@@ -42,7 +46,7 @@ const LeftBar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton>
               <ListItemIcon>
                 <Group />
               </ListItemIcon>
@@ -50,7 +54,7 @@ const LeftBar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton>
               <ListItemIcon>
                 <Storefront />
               </ListItemIcon>
@@ -58,7 +62,7 @@ const LeftBar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton>
               <ListItemIcon>
                 <Person />
               </ListItemIcon>
@@ -66,7 +70,7 @@ const LeftBar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton>
               <ListItemIcon>
                 <Settings />
               </ListItemIcon>
@@ -74,15 +78,20 @@ const LeftBar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton>
               <ListItemIcon>
                 <AccountBox />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
+              <ListItemText
+                onClick={() => {
+                  navigate(`/profile/${user.data._id}`);
+                }}
+                primary="Profile"
+              />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton>
               <ListItemIcon>
                 {mode === "light" ? <ModeNight /> : <LightMode />}
               </ListItemIcon>

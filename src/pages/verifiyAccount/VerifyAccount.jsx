@@ -153,8 +153,6 @@ const VerifyAccount = () => {
           >
             <LoadingButton
               onClick={handleResendCode}
-              error={error}
-              helperText={error ? "Incorrect entry." : null}
               loading={isFetching}
               fullWidth={true}
               sx={{
@@ -169,8 +167,6 @@ const VerifyAccount = () => {
             </LoadingButton>
             <LoadingButton
               type="submit"
-              error={error}
-              helperText={error ? "Incorrect entry." : null}
               loading={isFetching}
               fullWidth={true}
               sx={{

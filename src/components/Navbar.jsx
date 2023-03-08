@@ -68,15 +68,25 @@ const Navbar = () => {
       setOpen((prev) => !prev);
     }
   };
+  console.log(user);
   return (
     <AppBar position="sticky">
       <StyledToolbar>
-        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
+        <Typography
+          onClick={() => {
+            navigate("/");
+          }}
+          variant="h6"
+          sx={{ display: { xs: "none", sm: "block" }, cursor: "pointer" }}
+        >
           FB
         </Typography>
         <Facebook sx={{ display: { xs: "block", sm: "none" } }} />
         <Search>
-          <InputBase placeholder="search..." />
+          <InputBase
+            placeholder="looking for friends..."
+            sx={{ color: "black" }}
+          />
         </Search>
         <Icons>
           <Badge badgeContent={4} color="error">
@@ -87,16 +97,18 @@ const Navbar = () => {
           </Badge>
           <Avatar
             sx={{ width: 30, height: 30 }}
-            src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            src={user?.data?.profilePicture}
             onClick={(e) => setOpen(true)}
           />
         </Icons>
         <UserBox onClick={() => setOpen(true)}>
           <Avatar
             sx={{ width: 30, height: 30 }}
-            src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            src={user?.data?.profilePicture}
           />
-          <Typography variant="span">John</Typography>
+          <Typography variant="span" textTransform={"capitalize"}>
+            {user?.data?.firstname}
+          </Typography>
         </UserBox>
       </StyledToolbar>
       <Menu
@@ -114,6 +126,7 @@ const Navbar = () => {
         <MenuItem
           onClick={() => {
             setOpen((prev) => !prev);
+            navigate(`profile/${user.data._id}`);
           }}
         >
           Profile
