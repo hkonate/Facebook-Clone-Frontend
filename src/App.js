@@ -56,11 +56,11 @@ function App() {
           path: "/",
           element: <Home />,
         },
+        {
+          path: "/profile/:id",
+          element: <Profile />,
+        },
       ],
-    },
-    {
-      path: "/profile/:id",
-      element: <Profile />,
     },
     {
       path: "/login",

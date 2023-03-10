@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
-import Post from "./Post";
+import ProfilePost from "./ProfilePost";
 import axios from "axios";
 import Add from "./Add";
 import { AuthContext } from "../context/authentification/AuthContext";
@@ -12,16 +12,18 @@ import {
   CardContent,
   Skeleton,
 } from "@mui/material";
+import Banner from "./Banner";
 
-const Feed = () => {
+const ProfileFeed = ({ userID }) => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
   const { user: CurrentUser } = useContext(AuthContext);
   useEffect(() => {
     setIsLoading(true);
     const fetchPosts = async () => {
-      const res = await axios.get("http://localhost:3000/feed", {
+      const res = await axios.get(`http://localhost:3000/post/${userID}`, {
         headers: {
           Authorization: `Bearer ${CurrentUser?.data?.authTokens[0][0].authToken}`,
         },
@@ -39,7 +41,6 @@ const Feed = () => {
       setIsLoading(false);
     };
     if (CurrentUser) fetchPosts();
-    console.log("bnbn");
   }, [CurrentUser.data._id, CurrentUser?.data?.authTokens, CurrentUser]);
 
   return (
@@ -56,6 +57,53 @@ const Feed = () => {
             width: "100%",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "25%",
+              width: "100%",
+              marginBottom: "45px",
+            }}
+          >
+            <Card
+              sx={{
+                width: "80%",
+                height: "100%",
+                m: 2,
+                mb: 7,
+                position: "relative",
+                overflow: "visible",
+              }}
+            >
+              <Skeleton
+                sx={{ height: "100%" }}
+                animation="wave"
+                variant="rectangular"
+              />
+              <Card
+                sx={{
+                  width: "150px",
+                  height: "150px",
+                  backgroundColor: "white",
+                  position: "absolute",
+                  bottom: "-50px",
+                  left: "42%",
+                  borderRadius: "50%",
+                  p: "2px",
+                }}
+              >
+                <Skeleton
+                  animation="wave"
+                  variant="circular"
+                  width={"100%"}
+                  height={"100%"}
+                />
+              </Card>
+            </Card>
+          </Box>
+
           <Card sx={{ width: "80%", height: "40%", m: 2 }}>
             <CardHeader
               avatar={
@@ -132,21 +180,26 @@ const Feed = () => {
         </Typography>
       ) : (
         <>
+          <Banner user={user} ownProfile={CurrentUser?.data?._id === userID} />
           {posts?.map((post) => {
             return (
-              <Post
+              <ProfilePost
                 key={post?._id}
                 post={post}
                 setPosts={setPosts}
                 posts={posts}
+                setUser={setUser}
+                user={user}
               />
             );
           })}
         </>
       )}
-      <Add posts={posts} setPosts={setPosts} />
+      {CurrentUser?.data?._id === userID && (
+        <Add posts={posts} setPosts={setPosts} />
+      )}
     </>
   );
 };
 
-export default Feed;
+export default ProfileFeed;

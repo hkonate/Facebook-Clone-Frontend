@@ -17,6 +17,7 @@ import {
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Define styled components
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between",
@@ -49,17 +50,21 @@ const UserBox = styled(Box)(({ theme }) => ({
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Handle logout
   const handleLogout = async () => {
     try {
-      console.log(user?.data?.authTokens[0][0].authToken);
+      // Make a DELETE request to the server to logout the user
       await axios.delete("http://localhost:3000/user/logout", {
         headers: {
           Authorization: `Bearer ${user?.data?.authTokens[0][0].authToken}`,
         },
       });
 
+      // Close the menu, navigate to the login page, and remove user info from local storage
       setOpen((prev) => !prev);
       navigate("/login");
       localStorage.removeItem("user");
@@ -68,7 +73,20 @@ const Navbar = () => {
       setOpen((prev) => !prev);
     }
   };
-  console.log(user);
+
+  const handleProfileClick = () => {
+    setOpen((prev) => !prev);
+    navigate(`profile/${user.data._id}`);
+  };
+
+  const handleMenuOpen = () => {
+    setOpen(true);
+  };
+
+  const handleMenuClose = () => {
+    setOpen(false);
+  };
+
   return (
     <AppBar position="sticky">
       <StyledToolbar>
@@ -98,10 +116,10 @@ const Navbar = () => {
           <Avatar
             sx={{ width: 30, height: 30 }}
             src={user?.data?.profilePicture}
-            onClick={(e) => setOpen(true)}
+            onClick={handleMenuOpen}
           />
         </Icons>
-        <UserBox onClick={() => setOpen(true)}>
+        <UserBox onClick={handleMenuOpen}>
           <Avatar
             sx={{ width: 30, height: 30 }}
             src={user?.data?.profilePicture}
@@ -123,21 +141,8 @@ const Navbar = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem
-          onClick={() => {
-            setOpen((prev) => !prev);
-            navigate(`profile/${user.data._id}`);
-          }}
-        >
-          Profile
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setOpen((prev) => !prev);
-          }}
-        >
-          My account
-        </MenuItem>
+        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </AppBar>

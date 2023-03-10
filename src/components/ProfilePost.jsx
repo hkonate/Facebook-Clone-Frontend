@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/authentification/AuthContext";
@@ -18,12 +18,11 @@ import {
   Typography,
 } from "@mui/material";
 
-const Post = ({ post, setPosts, posts }) => {
+const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
   // Get the current user from the AuthContext
   const { user: currentUser } = useContext(AuthContext);
 
   // Initialize state variables
-  const [user, setUser] = useState(null); // User object
   const [anchorEl, setAnchorEl] = useState(null); // Anchor element for the delete post menu
   const [capitalizeName, setCapitalizeName] = useState(null); // Capitalized name of the user who created the post
   const [like, setLike] = useState(post ? post?.likes?.length : 0); // Number of likes for this post
@@ -157,32 +156,34 @@ const Post = ({ post, setPosts, posts }) => {
           )
         }
         action={
-          <>
-            <IconButton
-              disabled={post?.userId !== currentUser?.data?._id}
-              onClick={(e) => handleClick(e)}
-              aria-label="more"
-            >
-              <MoreVert />
-            </IconButton>
-            <Menu
-              open={open}
-              onClose={handleClose}
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <MenuItem
-                onClick={() => {
-                  requestDeletePost(post?._id);
+          currentUser?.data?._id === post?.userId && (
+            <>
+              <IconButton
+                disabled={post?.userId !== currentUser?.data?._id}
+                onClick={(e) => handleClick(e)}
+                aria-label="more"
+              >
+                <MoreVert />
+              </IconButton>
+              <Menu
+                open={open}
+                onClose={handleClose}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
               >
-                Delete
-              </MenuItem>
-            </Menu>
-          </>
+                <MenuItem
+                  onClick={() => {
+                    requestDeletePost(post?._id);
+                  }}
+                >
+                  Delete
+                </MenuItem>
+              </Menu>
+            </>
+          )
         }
         title={
           user && (
@@ -225,7 +226,7 @@ const Post = ({ post, setPosts, posts }) => {
         </IconButton>
         <CardContent sx={{ mt: "5px" }}>
           <Typography variant="body2" color="text.secondary" fontSize={"16px"}>
-            {like + (post?.likes?.length > 0 ? " Likes" : " Like")}
+            {like + (post?.likes?.length > 1 ? " Likes" : " Like")}
           </Typography>
         </CardContent>
       </CardActions>
@@ -233,4 +234,4 @@ const Post = ({ post, setPosts, posts }) => {
   );
 };
 
-export default Post;
+export default ProfilePost;
