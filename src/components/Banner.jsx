@@ -1,7 +1,20 @@
+import { Link } from "react-router-dom";
 import { Box, Card, Avatar, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import {
+  LocationOnRounded,
+  LocationCityRounded,
+  EmailRounded,
+  Twitter,
+  Instagram,
+  Pinterest,
+  LinkedIn,
+  Facebook,
+} from "@mui/icons-material";
+import Update from "./Update";
 
-const Banner = ({ user, ownProfile }) => {
+const Banner = ({ user, ownProfile, setUser }) => {
+  console.log(user, "okf");
   return (
     <>
       <Box
@@ -64,31 +77,44 @@ const Banner = ({ user, ownProfile }) => {
         <Card
           sx={{
             width: "100%",
-            height: "210px",
-            backgroundColor: "red",
+            height: "250px",
             m: 5,
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
             paddingX: 5,
             paddingTop: 4,
           }}
         >
-          <Box>
-            <Typography>ToTo</Typography>
+          <Box sx={{ display: "flex", gap: 1, flex: 1 }}>
+            <Link to="https://www.facebook.com/" target="_blank">
+              <Facebook sx={{ color: "silver" }} />
+            </Link>
+            <Link to="https://www.instagram.com/" target="_blank">
+              <Instagram sx={{ color: "silver" }} />
+            </Link>
+            <Link to="https://twitter.com/" target="_blank">
+              <Twitter sx={{ color: "silver" }} />
+            </Link>
+            <Link to="https://www.linkedin.com/" target="_blank">
+              <LinkedIn sx={{ color: "silver" }} />
+            </Link>
+            <Link to="https://www.pinterest.com/" target="_blank">
+              <Pinterest sx={{ color: "silver" }} />
+            </Link>
           </Box>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 2,
+              gap: !ownProfile ? 2 : 5,
+              flex: 1,
             }}
           >
             <Box
               sx={{
                 display: "flex",
-                gap: 5,
+                gap: 2,
                 alignItems: "center",
               }}
             >
@@ -100,21 +126,29 @@ const Banner = ({ user, ownProfile }) => {
                 {user?.firstname}
               </Typography>
 
-              <Typography component="span" fontSize="35px">
+              <Typography
+                component="span"
+                fontSize="35px"
+                textTransform={"capitalize"}
+              >
                 {user?.lastname}
               </Typography>
             </Box>
             <Box
               sx={{
                 display: "flex",
-                gap: 15,
                 alignItems: "center",
+                justifyContent: "center",
+                color: "silver",
+                gap: 5,
               }}
             >
-              <Box>
+              <Box sx={{ display: "flex" }}>
+                <LocationCityRounded />
                 <Typography>{user?.city}</Typography>
               </Box>
-              <Box>
+              <Box sx={{ display: "flex" }}>
+                <LocationOnRounded />
                 <Typography>{user?.from}</Typography>
               </Box>
             </Box>
@@ -129,8 +163,21 @@ const Banner = ({ user, ownProfile }) => {
               )}
             </Box>
           </Box>
-          <Box>
-            <Typography>Ty</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              flex: 1,
+              justifyContent: "flex-end",
+            }}
+          >
+            {!ownProfile ? (
+              <Link to={`mailto:${user?.email}`}>
+                <EmailRounded sx={{ color: "silver" }} />
+              </Link>
+            ) : (
+              <Update setUser={setUser} />
+            )}
           </Box>
         </Card>
       </Box>

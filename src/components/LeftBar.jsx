@@ -89,7 +89,7 @@ const LeftBar = ({ mode, setMode }) => {
               </ListItemIcon>
               <ListItemText
                 onClick={() => {
-                  navigate(`/profile/${user.data._id}`);
+                  navigate(`/profile/${user?._id}`);
                 }}
                 primary="Profile"
               />

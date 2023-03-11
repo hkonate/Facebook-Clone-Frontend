@@ -46,9 +46,9 @@ const Add = ({ posts, setPosts }) => {
   const desc = useRef();
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       //prevent page to refresh and start loading
-      e.preventDefault();
       setLoading(true);
 
       const formdata = new FormData();
@@ -64,7 +64,7 @@ const Add = ({ posts, setPosts }) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${user.data.authTokens[0][0].authToken}`,
+            Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
           },
         }
       );
@@ -82,9 +82,9 @@ const Add = ({ posts, setPosts }) => {
 
   //capitalize users name
   const capitalizeFirstname =
-    user?.data?.firstname[0]?.toUpperCase() + user?.data?.firstname?.slice(1);
+    user?.firstname[0]?.toUpperCase() + user?.firstname?.slice(1);
   const capitalizeLastname =
-    user?.data?.lastname[0]?.toUpperCase() + user?.data?.lastname?.slice(1);
+    user?.lastname[0]?.toUpperCase() + user?.lastname?.slice(1);
 
   return (
     <>
@@ -124,10 +124,7 @@ const Add = ({ posts, setPosts }) => {
             Create post
           </Typography>
           <UserBox>
-            <Avatar
-              src={user?.data?.profilePicture}
-              sx={{ width: 30, height: 30 }}
-            />
+            <Avatar src={user?.profilePicture} sx={{ width: 30, height: 30 }} />
             <Typography fontWeight={500} variant="span">
               {capitalizeFirstname + " " + capitalizeLastname}
             </Typography>

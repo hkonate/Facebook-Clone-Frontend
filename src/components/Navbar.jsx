@@ -60,7 +60,7 @@ const Navbar = () => {
       // Make a DELETE request to the server to logout the user
       await axios.delete("http://localhost:3000/user/logout", {
         headers: {
-          Authorization: `Bearer ${user?.data?.authTokens[0][0].authToken}`,
+          Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
         },
       });
 
@@ -76,7 +76,7 @@ const Navbar = () => {
 
   const handleProfileClick = () => {
     setOpen((prev) => !prev);
-    navigate(`profile/${user.data._id}`);
+    navigate(`profile/${user._id}`);
   };
 
   const handleMenuOpen = () => {
@@ -115,17 +115,14 @@ const Navbar = () => {
           </Badge>
           <Avatar
             sx={{ width: 30, height: 30 }}
-            src={user?.data?.profilePicture}
+            src={user?.profilePicture}
             onClick={handleMenuOpen}
           />
         </Icons>
         <UserBox onClick={handleMenuOpen}>
-          <Avatar
-            sx={{ width: 30, height: 30 }}
-            src={user?.data?.profilePicture}
-          />
+          <Avatar sx={{ width: 30, height: 30 }} src={user?.profilePicture} />
           <Typography variant="span" textTransform={"capitalize"}>
-            {user?.data?.firstname}
+            {user?.firstname}
           </Typography>
         </UserBox>
       </StyledToolbar>

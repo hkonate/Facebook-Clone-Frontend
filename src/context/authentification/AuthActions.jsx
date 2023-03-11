@@ -20,3 +20,8 @@ export const Unfollow = (userId) => ({
   type: "UNFOLLOW",
   payload: userId,
 });
+
+export const UpdateProfile = (user) => ({
+  type: "UPDATE_PROFILE",
+  payload: user,
+});

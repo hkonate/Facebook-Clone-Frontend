@@ -41,31 +41,37 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        console.log(currentUser._id === post?.userId, "vivi");
         // If the current user is the owner of this post, set the user state to the current user
-        if (currentUser.data._id === post?.userId) setUser(currentUser.data);
+        if (currentUser._id === post?.userId) setUser(currentUser);
         // Else if the user state already exists and is not the post creator, do not fetch again. Otherwise, fetch the user data.
-        else if ((user && user._id !== post?.userId) || !user) {
+        else if ((user && user?._id !== post?.userId) || !user) {
+          console.log("pass");
           const res = await axios.get(
             `http://localhost:3000/user/${post?.userId}`,
             {
               headers: {
                 // Include the user's authentication token in the request headers
-                Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+                Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
               },
             }
           );
+          console.log(res.data, "frf");
           setUser(res.data.data);
         }
         setIsLiked(post?.likes?.length);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
     // If a post exists, fetch user information for that post
     if (post) fetchUser();
-  }, [currentUser.data, post, setUser, user]);
+  }, [post]);
 
   // Update the capitalized name state variable for each post
   useEffect(() => {
     if (user) {
+      console.log(user, "mpmp");
       const { firstname, lastname } = user;
       setCapitalizeName(
         firstname && lastname
@@ -86,7 +92,7 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
         {
           headers: {
             // Include the user's authentication token in the request headers
-            Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+            Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
           },
         }
       );
@@ -102,7 +108,7 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
       await axios.delete(`http://localhost:3000/post/delete/${postId}`, {
         headers: {
           // Include the user's authentication token in the request headers
-          Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+          Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
         },
       });
 
@@ -156,10 +162,10 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
           )
         }
         action={
-          currentUser?.data?._id === post?.userId && (
+          currentUser?._id === post?.userId && (
             <>
               <IconButton
-                disabled={post?.userId !== currentUser?.data?._id}
+                disabled={post?.userId !== currentUser?._id}
                 onClick={(e) => handleClick(e)}
                 aria-label="more"
               >

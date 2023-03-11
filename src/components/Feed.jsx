@@ -19,28 +19,31 @@ const Feed = () => {
 
   const { user: CurrentUser } = useContext(AuthContext);
   useEffect(() => {
-    setIsLoading(true);
-    const fetchPosts = async () => {
-      const res = await axios.get("http://localhost:3000/feed", {
-        headers: {
-          Authorization: `Bearer ${CurrentUser?.data?.authTokens[0][0].authToken}`,
-        },
-      });
+    try {
+      console.log(CurrentUser?.authTokens[0][0].authToken, "kiki");
+      setIsLoading(true);
+      const fetchPosts = async () => {
+        const res = await axios.get("http://localhost:3000/feed", {
+          headers: {
+            Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
+          },
+        });
 
-      if (res.data.data.length > 1) {
-        setPosts(
-          res?.data?.data.sort((p1, p2) => {
-            return new Date(p2.createdAt) - new Date(p1.createdAt);
-          })
-        );
-      } else {
-        setPosts([res?.data?.data]);
-      }
-      setIsLoading(false);
-    };
-    if (CurrentUser) fetchPosts();
-    console.log("bnbn");
-  }, [CurrentUser.data._id, CurrentUser?.data?.authTokens, CurrentUser]);
+        if (res.data.data.length > 1) {
+          setPosts(
+            res?.data?.data.sort((p1, p2) => {
+              return new Date(p2.createdAt) - new Date(p1.createdAt);
+            })
+          );
+        } else {
+          setPosts([res?.data?.data]);
+        }
+        setIsLoading(false);
+      };
+      if (CurrentUser) fetchPosts();
+      console.log("bnbn");
+    } catch (error) {}
+  }, [CurrentUser?._id, CurrentUser?.authTokens]);
 
   return (
     <>

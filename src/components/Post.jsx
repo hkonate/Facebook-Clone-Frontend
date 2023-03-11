@@ -29,7 +29,7 @@ const Post = ({ post, setPosts, posts }) => {
   const [like, setLike] = useState(post ? post?.likes?.length : 0); // Number of likes for this post
   const [isLiked, setIsLiked] = useState(
     // Whether the current user has liked this post
-    post?.likes?.includes(currentUser._id)
+    post?.likes?.includes(currentUser?._id)
   );
 
   // Get the navigation function from react-router-dom
@@ -43,7 +43,7 @@ const Post = ({ post, setPosts, posts }) => {
     const fetchUser = async () => {
       try {
         // If the current user is the owner of this post, set the user state to the current user
-        if (currentUser.data._id === post?.userId) setUser(currentUser.data);
+        if (currentUser?._id === post?.userId) setUser(currentUser);
         // Else if the user state already exists and is not the post creator, do not fetch again. Otherwise, fetch the user data.
         else if ((user && user._id !== post?.userId) || !user) {
           const res = await axios.get(
@@ -51,7 +51,7 @@ const Post = ({ post, setPosts, posts }) => {
             {
               headers: {
                 // Include the user's authentication token in the request headers
-                Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+                Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
               },
             }
           );
@@ -62,11 +62,12 @@ const Post = ({ post, setPosts, posts }) => {
     };
     // If a post exists, fetch user information for that post
     if (post) fetchUser();
-  }, [currentUser.data, post, setUser, user]);
+  }, [post, setUser, user]);
 
   // Update the capitalized name state variable for each post
   useEffect(() => {
     if (user) {
+      console.log(user, "post");
       const { firstname, lastname } = user;
       setCapitalizeName(
         firstname && lastname
@@ -87,7 +88,7 @@ const Post = ({ post, setPosts, posts }) => {
         {
           headers: {
             // Include the user's authentication token in the request headers
-            Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+            Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
           },
         }
       );
@@ -103,7 +104,7 @@ const Post = ({ post, setPosts, posts }) => {
       await axios.delete(`http://localhost:3000/post/delete/${postId}`, {
         headers: {
           // Include the user's authentication token in the request headers
-          Authorization: `Bearer ${currentUser?.data?.authTokens[0][0].authToken}`,
+          Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
         },
       });
 
@@ -130,7 +131,7 @@ const Post = ({ post, setPosts, posts }) => {
   const handleNavigateToProfile = () => {
     navigate(`/profile/${post?.userId}`);
   };
-
+  console.log(capitalizeName, "capi");
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
@@ -159,7 +160,7 @@ const Post = ({ post, setPosts, posts }) => {
         action={
           <>
             <IconButton
-              disabled={post?.userId !== currentUser?.data?._id}
+              disabled={post?.userId !== currentUser?._id}
               onClick={(e) => handleClick(e)}
               aria-label="more"
             >

@@ -20,16 +20,17 @@ const ProfileFeed = ({ userID }) => {
   const [user, setUser] = useState(null);
 
   const { user: CurrentUser } = useContext(AuthContext);
+
   useEffect(() => {
     setIsLoading(true);
     const fetchPosts = async () => {
       const res = await axios.get(`http://localhost:3000/post/${userID}`, {
         headers: {
-          Authorization: `Bearer ${CurrentUser?.data?.authTokens[0][0].authToken}`,
+          Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
         },
       });
-
       if (res.data.data.length > 1) {
+        console.log(res.data.data, "hohoh");
         setPosts(
           res?.data?.data.sort((p1, p2) => {
             return new Date(p2.createdAt) - new Date(p1.createdAt);
@@ -41,8 +42,8 @@ const ProfileFeed = ({ userID }) => {
       setIsLoading(false);
     };
     if (CurrentUser) fetchPosts();
-  }, [CurrentUser.data._id, CurrentUser?.data?.authTokens, CurrentUser]);
-
+  }, [CurrentUser?._id, CurrentUser?.authTokens]);
+  console.log(CurrentUser, "feed");
   return (
     <>
       {isLoading ? (
@@ -180,7 +181,11 @@ const ProfileFeed = ({ userID }) => {
         </Typography>
       ) : (
         <>
-          <Banner user={user} ownProfile={CurrentUser?.data?._id === userID} />
+          <Banner
+            setUser={setUser}
+            user={user}
+            ownProfile={CurrentUser?._id === userID}
+          />
           {posts?.map((post) => {
             return (
               <ProfilePost
@@ -195,9 +200,7 @@ const ProfileFeed = ({ userID }) => {
           })}
         </>
       )}
-      {CurrentUser?.data?._id === userID && (
-        <Add posts={posts} setPosts={setPosts} />
-      )}
+      {CurrentUser?._id === userID && <Add posts={posts} setPosts={setPosts} />}
     </>
   );
 };
