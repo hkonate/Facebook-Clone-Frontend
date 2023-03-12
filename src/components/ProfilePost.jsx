@@ -41,12 +41,10 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log(currentUser._id === post?.userId, "vivi");
         // If the current user is the owner of this post, set the user state to the current user
         if (currentUser._id === post?.userId) setUser(currentUser);
         // Else if the user state already exists and is not the post creator, do not fetch again. Otherwise, fetch the user data.
         else if ((user && user?._id !== post?.userId) || !user) {
-          console.log("pass");
           const res = await axios.get(
             `http://localhost:3000/user/${post?.userId}`,
             {
@@ -56,13 +54,11 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
               },
             }
           );
-          console.log(res.data, "frf");
+
           setUser(res.data.data);
         }
         setIsLiked(post?.likes?.length);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     // If a post exists, fetch user information for that post
     if (post) fetchUser();
@@ -71,7 +67,6 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
   // Update the capitalized name state variable for each post
   useEffect(() => {
     if (user) {
-      console.log(user, "mpmp");
       const { firstname, lastname } = user;
       setCapitalizeName(
         firstname && lastname

@@ -67,7 +67,6 @@ const Post = ({ post, setPosts, posts }) => {
   // Update the capitalized name state variable for each post
   useEffect(() => {
     if (user) {
-      console.log(user, "post");
       const { firstname, lastname } = user;
       setCapitalizeName(
         firstname && lastname
@@ -131,7 +130,6 @@ const Post = ({ post, setPosts, posts }) => {
   const handleNavigateToProfile = () => {
     navigate(`/profile/${post?.userId}`);
   };
-  console.log(capitalizeName, "capi");
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader

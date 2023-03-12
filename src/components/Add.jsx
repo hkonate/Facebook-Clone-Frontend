@@ -69,7 +69,6 @@ const Add = ({ posts, setPosts }) => {
         }
       );
       const newTab = [res.data.data, ...posts];
-      console.log(newTab, "newTab");
       setPosts(newTab);
       //close post modal and stop enable submit btn
       setOpen(false);
@@ -139,7 +138,6 @@ const Add = ({ posts, setPosts }) => {
           <Box
             component={"form"}
             onSubmit={(e) => {
-              console.log("submit");
               handleSubmit(e);
             }}
           >

@@ -12,9 +12,58 @@ import {
   Facebook,
 } from "@mui/icons-material";
 import Update from "./Update";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/authentification/AuthContext";
+import axios from "axios";
 
 const Banner = ({ user, ownProfile, setUser }) => {
-  console.log(user, "okf");
+  const { user: currentUser, dispatch } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  //Follow a user
+  const handleFollow = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.patch(
+        "http://localhost:3000/user/connections",
+        {
+          id: user._id,
+          action: "follow",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
+          },
+        }
+      );
+      dispatch({ type: "FOLLOW", payload: user._id });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  //Unfollow a user
+  const handleUnfollow = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.patch(
+        "http://localhost:3000/user/connections",
+        {
+          id: user._id,
+          action: "unfollow",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser?.authTokens[0][0].authToken}`,
+          },
+        }
+      );
+      dispatch({ type: "UNFOLLOW", payload: user._id });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <Box
@@ -153,14 +202,28 @@ const Banner = ({ user, ownProfile, setUser }) => {
               </Box>
             </Box>
             <Box>
-              {!ownProfile && (
-                <LoadingButton
-                  variant="contained"
-                  aria-label="outlined primary"
-                >
-                  follow
-                </LoadingButton>
-              )}
+              {!ownProfile &&
+                (currentUser.followings.findIndex((el) => el === user?._id) ===
+                -1 ? (
+                  <LoadingButton
+                    loading={loading}
+                    onClick={handleFollow}
+                    variant="contained"
+                    aria-label="outlined primary"
+                  >
+                    follow
+                  </LoadingButton>
+                ) : (
+                  <LoadingButton
+                    loading={loading}
+                    onClick={handleUnfollow}
+                    variant="contained"
+                    aria-label="outlined"
+                    sx={{ backgroundColor: "silver" }}
+                  >
+                    unfollow
+                  </LoadingButton>
+                ))}
             </Box>
           </Box>
           <Box

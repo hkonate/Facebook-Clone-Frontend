@@ -20,7 +20,6 @@ const Feed = () => {
   const { user: CurrentUser } = useContext(AuthContext);
   useEffect(() => {
     try {
-      console.log(CurrentUser?.authTokens[0][0].authToken, "kiki");
       setIsLoading(true);
       const fetchPosts = async () => {
         const res = await axios.get("http://localhost:3000/feed", {
@@ -41,7 +40,6 @@ const Feed = () => {
         setIsLoading(false);
       };
       if (CurrentUser) fetchPosts();
-      console.log("bnbn");
     } catch (error) {}
   }, [CurrentUser?._id, CurrentUser?.authTokens]);
 

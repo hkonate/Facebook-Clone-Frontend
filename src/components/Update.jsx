@@ -73,7 +73,6 @@ const Update = ({ setUser }) => {
       }
 
       //Update user current user's infos passed in formdata
-      console.log(formdata, user?.authTokens[0][0].authToken);
       if (isFormDataEmpty) {
         setLoading(false);
         return;
@@ -95,7 +94,6 @@ const Update = ({ setUser }) => {
       setLoading((prev) => !prev);
     } catch (error) {
       //in case is error enable submit btn again
-      console.log(error, "update");
       setError(true);
       setLoading(false);
     }
@@ -130,7 +128,6 @@ const Update = ({ setUser }) => {
           <Box
             component={"form"}
             onSubmit={(e) => {
-              console.log("submit");
               handleSubmit(e);
             }}
             sx={{ display: "flex", flexDirection: "column", gap: 3 }}
