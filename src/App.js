@@ -1,5 +1,5 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import * as React from "react";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Login from "./pages/login/Login.jsx";
 import Navbar from "./components/Navbar";
@@ -10,6 +10,7 @@ import Home from "./pages/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import NewPassword from "./pages/newPassword/NewPassword.jsx";
 import VerifyAccount from "./pages/verifiyAccount/VerifyAccount.jsx";
+import Friends from "./pages/Friends/Friends.jsx";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import { useState, useContext } from "react";
 import { AuthContext } from "./context/authentification/AuthContext";
@@ -59,6 +60,10 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
+        },
+        {
+          path: "/friends",
+          element: <Friends />,
         },
       ],
     },

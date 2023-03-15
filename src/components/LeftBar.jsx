@@ -66,7 +66,12 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemText primary="Marketplace" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem
+            onClick={() => {
+              navigate(`/friends`);
+            }}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
                 <Person />
@@ -82,17 +87,17 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemText primary="Settings" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem
+            onClick={() => {
+              navigate(`/profile/${user?._id}`);
+            }}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
                 <AccountBox />
               </ListItemIcon>
-              <ListItemText
-                onClick={() => {
-                  navigate(`/profile/${user?._id}`);
-                }}
-                primary="Profile"
-              />
+              <ListItemText primary="Profile" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
