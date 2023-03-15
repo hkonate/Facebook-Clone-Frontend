@@ -15,6 +15,7 @@ import Update from "./Update";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/authentification/AuthContext";
 import axios from "axios";
+import UpdatePicture from "./UpdatePicture";
 
 const Banner = ({ user, ownProfile, setUser }) => {
   const { user: currentUser, dispatch } = useContext(AuthContext);
@@ -71,8 +72,21 @@ const Banner = ({ user, ownProfile, setUser }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
         }}
       >
+        {ownProfile && (
+          <Card
+            sx={{
+              position: "absolute",
+              bottom: "30px",
+              right: "50px",
+              zIndex: "1",
+            }}
+          >
+            <UpdatePicture />
+          </Card>
+        )}
         <Card
           sx={{
             width: "100%",

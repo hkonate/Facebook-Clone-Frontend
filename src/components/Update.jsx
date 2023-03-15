@@ -30,7 +30,6 @@ const UserBox = styled(Box)({
 const Update = ({ setUser }) => {
   //states
   const [open, setOpen] = useState(false);
-  const [file, setFile] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
