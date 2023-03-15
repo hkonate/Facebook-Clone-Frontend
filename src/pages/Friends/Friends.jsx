@@ -21,7 +21,6 @@ const Friends = () => {
       setFriends(res.data);
       setLoading((prev) => !prev);
     } catch (error) {
-      console.log(error);
       setLoading((prev) => !prev);
     }
   }, [user?.AuthTokens]);
