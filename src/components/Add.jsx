@@ -68,9 +68,15 @@ const Add = ({ posts, setPosts }) => {
           },
         }
       );
-      const newTab = [res.data.data, ...posts];
-      setPosts(newTab);
+      if (posts) {
+        const newTab = [res.data.data, ...posts];
+        setPosts(newTab);
+      } else {
+        const newTab = [res.data.data];
+        setPosts(newTab);
+      }
       //close post modal and stop enable submit btn
+      setFile(null);
       setOpen(false);
       setLoading(false);
     } catch (error) {
