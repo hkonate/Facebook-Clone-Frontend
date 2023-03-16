@@ -13,17 +13,30 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  styled,
   Switch,
 } from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authentification/AuthContext";
 
+const ListText = styled(ListItemText)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}));
+
+const ListIcon = styled(ListItemIcon)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}));
+
 const LeftBar = ({ mode, setMode }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   return (
-    <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
+    <Box flex={1} p={2} zIndex={2}>
       <Box position="fixed">
         <List>
           <ListItem
@@ -36,7 +49,7 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemIcon>
                 <Home />
               </ListItemIcon>
-              <ListItemText primary="Homepage" />
+              <ListText primary="Homepage" />
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -49,7 +62,7 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemIcon>
                 <Person />
               </ListItemIcon>
-              <ListItemText primary="Friends" />
+              <ListText primary="Friends" />
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -62,7 +75,7 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemIcon>
                 <Settings />
               </ListItemIcon>
-              <ListItemText primary="Settings" />
+              <ListText primary="Settings" />
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -75,17 +88,23 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemIcon>
                 <AccountBox />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
+              <ListText primary="Profile" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <ListIcon>
                 {mode === "light" ? <ModeNight /> : <LightMode />}
-              </ListItemIcon>
+              </ListIcon>
               <Switch
                 defaultChecked={mode === "light" ? false : true}
-                onChange={(e) => setMode(mode === "light" ? "dark" : "light")}
+                onChange={() => {
+                  localStorage.setItem(
+                    "mode",
+                    mode === "light" ? "dark" : "light"
+                  );
+                  setMode(mode === "light" ? "dark" : "light");
+                }}
               />
             </ListItemButton>
           </ListItem>

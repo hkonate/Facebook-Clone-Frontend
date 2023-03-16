@@ -12,10 +12,35 @@ import {
   IconButton,
   Paper,
   Avatar,
+  styled,
 } from "@mui/material";
 import { Visibility, VisibilityOff, AccountCircle } from "@mui/icons-material";
 import { CardCover } from "@mui/joy";
 import { LoadingButton } from "@mui/lab";
+
+const CustomCard = styled("ul")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row-reverse",
+  borderRadius: "10px",
+  overflow: "hiden",
+  p: 0,
+  [theme.breakpoints.up("md")]: { minHeight: "600px", width: "50%" },
+  [theme.breakpoints.down("lg")]: { width: "100%", minHeight: "100%" },
+}));
+
+const CustomTitle = styled("h1")(({ theme }) => ({
+  variant: "h4",
+  color: "#555",
+  fontWeight: "bold",
+  [theme.breakpoints.up("xs")]: {
+    fontSize: "40px",
+  },
+  [theme.breakpoints.only("xs")]: {
+    fontSize: "18px",
+  },
+  mx: "20px",
+  mb: "10px",
+}));
 
 const Register = () => {
   //states
@@ -92,18 +117,7 @@ const Register = () => {
         backgroundColor: "rgb(193, 190, 255)",
       }}
     >
-      <Card
-        component="ul"
-        sx={{
-          minHeight: { xs: "100%", sm: "100%", md: "100%", lg: "600px" },
-          width: { xs: "100%", sm: "100%", md: "100%", lg: "50%" },
-          display: "flex",
-          flexDirection: "row-reverse",
-          borderRadius: "10px",
-          overflow: "hidden",
-          p: 0,
-        }}
-      >
+      <CustomCard>
         <Card
           component="li"
           sx={{
@@ -178,19 +192,7 @@ const Register = () => {
             borderRadius: "0",
           }}
         >
-          <Typography
-            variant="h4"
-            component={"h1"}
-            color={"#555"}
-            fontWeight={"bold"}
-            sx={{
-              fontSize: { xs: "18px", sm: "40px", md: "40px", lg: "40px" },
-            }}
-            mx={"20px"}
-            mb={"10px"}
-          >
-            Register
-          </Typography>
+          <CustomTitle>Register</CustomTitle>
           <Box
             component={"form"}
             onSubmit={(event) => {
@@ -385,7 +387,7 @@ const Register = () => {
             </LoadingButton>
           </Box>
         </Card>
-      </Card>
+      </CustomCard>
     </Box>
   );
 };

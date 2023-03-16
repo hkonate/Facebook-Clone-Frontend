@@ -1,9 +1,15 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Typography, Divider, styled } from "@mui/material";
 import axios from "axios";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authentification/AuthContext";
+
+const Description = styled(Typography)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}));
 
 const Settings = () => {
   const { user } = useContext(AuthContext);
@@ -97,7 +103,7 @@ const Settings = () => {
         height={"18%"}
       >
         <Typography fontWeight={"bold"}>Disconnect</Typography>
-        <Typography>Disconnect user's account</Typography>
+        <Description>Disconnect user's account</Description>
         <LoadingButton
           onClick={handleLogout}
           loading={loading}
@@ -116,9 +122,9 @@ const Settings = () => {
         height={"18%"}
       >
         <Typography fontWeight={"bold"}>Devices</Typography>
-        <Typography>
+        <Description>
           Control access to this account, by sign out all devices.
-        </Typography>
+        </Description>
         <LoadingButton
           onClick={handleDisconnectDevices}
           loading={loading}
@@ -137,9 +143,9 @@ const Settings = () => {
         height={"18%"}
       >
         <Typography fontWeight={"bold"}>Account</Typography>
-        <Typography>
+        <Description>
           Permanently delete your account, you cannot come back after it.
-        </Typography>
+        </Description>
         <LoadingButton
           onClick={handleDeleteAccount}
           loading={loading}

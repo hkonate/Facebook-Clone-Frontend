@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Button,
   Modal,
@@ -25,7 +25,6 @@ const UpdatePicture = () => {
   const [loading, setLoading] = useState(false);
   const [cover, setCover] = useState(null);
   const [picture, setPicture] = useState(null);
-
   const { user, dispatch } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
@@ -64,7 +63,6 @@ const UpdatePicture = () => {
           },
         }
       );
-
       dispatch({ type: "UPDATE_PROFILE", payload: res.data });
 
       //close post modal and stop enable submit btn
@@ -77,12 +75,11 @@ const UpdatePicture = () => {
       setLoading(false);
     }
   };
-
   return (
     <>
       <Tooltip onClick={(e) => setOpen(true)} title="Modify Profile">
         <Button variant="contained" sx={{ fontSize: "10px" }}>
-          Modify Images
+          Modify
         </Button>
       </Tooltip>
       <SytledModal

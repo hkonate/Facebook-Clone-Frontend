@@ -7,7 +7,6 @@ import {
   EmailRounded,
   Twitter,
   Instagram,
-  Pinterest,
   LinkedIn,
   Facebook,
 } from "@mui/icons-material";
@@ -80,7 +79,7 @@ const Banner = ({ user, ownProfile, setUser }) => {
             sx={{
               position: "absolute",
               bottom: "30px",
-              right: "50px",
+              right: "30px",
               zIndex: "1",
             }}
           >
@@ -144,11 +143,18 @@ const Banner = ({ user, ownProfile, setUser }) => {
             m: 5,
             display: "flex",
             alignItems: "center",
-            paddingX: 5,
+            paddingX: 2,
             paddingTop: 4,
           }}
         >
-          <Box sx={{ display: "flex", gap: 1, flex: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              flex: 1,
+              flexDirection: { xs: "column" },
+            }}
+          >
             <Link to="https://www.facebook.com/" target="_blank">
               <Facebook sx={{ color: "silver" }} />
             </Link>
@@ -160,9 +166,6 @@ const Banner = ({ user, ownProfile, setUser }) => {
             </Link>
             <Link to="https://www.linkedin.com/" target="_blank">
               <LinkedIn sx={{ color: "silver" }} />
-            </Link>
-            <Link to="https://www.pinterest.com/" target="_blank">
-              <Pinterest sx={{ color: "silver" }} />
             </Link>
           </Box>
           <Box
@@ -203,7 +206,9 @@ const Banner = ({ user, ownProfile, setUser }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 color: "silver",
-                gap: 5,
+                gap: 3,
+                mt: { xs: 7 },
+                ml: { xs: 3 },
               }}
             >
               <Box sx={{ display: "flex" }}>

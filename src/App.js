@@ -17,8 +17,9 @@ import { useState, useContext } from "react";
 import { AuthContext } from "./context/authentification/AuthContext";
 
 function App() {
-  const [mode, setMode] = useState("light");
-
+  const [mode, setMode] = useState(
+    localStorage.getItem("mode") ? localStorage.getItem("mode") : "light"
+  );
   const darkTheme = createTheme({
     palette: {
       mode: mode,
@@ -26,7 +27,6 @@ function App() {
   });
   //if user did not logout redirect to home no need to log again
   const { user } = useContext(AuthContext);
-  console.log("app", user);
   const Layout = () => {
     return (
       <Box bgcolor={"background.default"} color={"text.primary"}>

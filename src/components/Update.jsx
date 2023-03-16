@@ -1,16 +1,8 @@
 import axios from "axios";
-import React, { useContext, useRef, useState } from "react";
-import {
-  Avatar,
-  Fab,
-  Modal,
-  styled,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { useContext, useState } from "react";
+import { Modal, styled, TextField, Tooltip, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { MoreVert, AccountCircle } from "@mui/icons-material";
+import { MoreVert } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { AuthContext } from "../context/authentification/AuthContext";
 
@@ -20,14 +12,7 @@ const SytledModal = styled(Modal)({
   justifyContent: "center",
 });
 
-const UserBox = styled(Box)({
-  display: "flex",
-  alignItems: "center",
-  gap: "10px",
-  marginBottom: "20px",
-});
-
-const Update = ({ setUser }) => {
+const Update = () => {
   //states
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
@@ -41,7 +26,6 @@ const Update = ({ setUser }) => {
       //prevent page to refresh and start loading
       setLoading(true);
       if (error) setError((prev) => !prev);
-
       let isFormDataEmpty = true;
       const formdata = new FormData();
 
@@ -85,7 +69,6 @@ const Update = ({ setUser }) => {
           },
         }
       );
-
       dispatch({ type: "UPDATE_PROFILE", payload: res.data });
 
       //close post modal and stop enable submit btn
@@ -97,7 +80,6 @@ const Update = ({ setUser }) => {
       setLoading(false);
     }
   };
-
   return (
     <>
       <Tooltip onClick={(e) => setOpen(true)} title="Modify Profile">
