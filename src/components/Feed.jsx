@@ -17,7 +17,7 @@ const Feed = () => {
       setIsLoading(true);
       const fetchPosts = async () => {
         const res = await axios.get(
-          "facebook-clone-backend-production-25dd.up.railway.app/feed",
+          "facebook-clone-backend-production.up.railway.app/feed",
           {
             headers: {
               Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,

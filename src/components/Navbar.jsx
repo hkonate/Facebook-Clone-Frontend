@@ -59,7 +59,7 @@ const Navbar = () => {
     try {
       // Make a DELETE request to the server to logout the user
       await axios.delete(
-        "facebook-clone-backend-production-25dd.up.railway.app/user/logout",
+        "facebook-clone-backend-production.up.railway.app/user/logout",
         {
           headers: {
             Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,

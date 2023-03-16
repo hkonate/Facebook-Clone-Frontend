@@ -31,7 +31,7 @@ const VerifyAccount = () => {
     try {
       //active account
       await axios.post(
-        `facebook-clone-backend-production-25dd.up.railway.app/otpVerification/${user.id}`,
+        `facebook-clone-backend-production.up.railway.app/otpVerification/${user.id}`,
         {
           otp: e.target[1].value,
         }
@@ -57,7 +57,7 @@ const VerifyAccount = () => {
     try {
       //send another code by mail
       const { data } = await axios.post(
-        "facebook-clone-backend-production-25dd.up.railway.app/otpResend",
+        "facebook-clone-backend-production.up.railway.app/otpResend",
         {
           email: emailRef.current.children[1].children[0].value,
         }

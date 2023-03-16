@@ -55,7 +55,7 @@ const UpdatePicture = () => {
       }
 
       const res = await axios.patch(
-        "facebook-clone-backend-production-25dd.up.railway.app/user/update",
+        "facebook-clone-backend-production.up.railway.app/user/update",
         formdata,
         {
           headers: {

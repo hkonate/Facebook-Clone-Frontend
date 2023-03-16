@@ -46,7 +46,7 @@ const NewPassword = () => {
     try {
       //active account
       await axios.post(
-        `facebook-clone-backend-production-25dd.up.railway.app/newPassword/${user.id}`,
+        `facebook-clone-backend-production.up.railway.app/newPassword/${user.id}`,
         {
           otp: e.target[1].value,
           password: e.target[2].value,
@@ -74,7 +74,7 @@ const NewPassword = () => {
     try {
       //send another code by mail
       const { data } = await axios.post(
-        `facebook-clone-backend-production-25dd.up.railway.app/password/otpResend`,
+        `facebook-clone-backend-production.up.railway.app/password/otpResend`,
         {
           email: emailRef.current.children[1].children[0].value,
         }

@@ -22,7 +22,7 @@ const Settings = () => {
       setLoading((prev) => !prev);
       // Make a DELETE request to the server to logout the user
       await axios.delete(
-        "facebook-clone-backend-production-25dd.up.railway.app/user/logout",
+        "facebook-clone-backend-production.up.railway.app/user/logout",
         {
           headers: {
             Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
@@ -46,7 +46,7 @@ const Settings = () => {
       setLoading((prev) => !prev);
       //Delete all user's devices
       await axios.post(
-        "facebook-clone-backend-production-25dd.up.railway.app/user/logout/all",
+        "facebook-clone-backend-production.up.railway.app/user/logout/all",
         {
           headers: {
             Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
@@ -72,7 +72,7 @@ const Settings = () => {
 
       //Delete users account
       await axios.delete(
-        "facebook-clone-backend-production-25dd.up.railway.app/user/delete",
+        "facebook-clone-backend-production.up.railway.app/user/delete",
         {
           headers: {
             Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
