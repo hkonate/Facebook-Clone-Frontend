@@ -1,12 +1,9 @@
 import {
   AccountBox,
-  Article,
-  Group,
   Home,
   ModeNight,
   Person,
   Settings,
-  Storefront,
   LightMode,
 } from "@mui/icons-material";
 import {
@@ -42,30 +39,6 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemText primary="Homepage" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Article />
-              </ListItemIcon>
-              <ListItemText primary="Pages" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Group />
-              </ListItemIcon>
-              <ListItemText primary="Groups" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Storefront />
-              </ListItemIcon>
-              <ListItemText primary="Marketplace" />
-            </ListItemButton>
-          </ListItem>
           <ListItem
             onClick={() => {
               navigate(`/friends`);
@@ -79,7 +52,12 @@ const LeftBar = ({ mode, setMode }) => {
               <ListItemText primary="Friends" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem
+            onClick={() => {
+              navigate(`/settings`);
+            }}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
                 <Settings />

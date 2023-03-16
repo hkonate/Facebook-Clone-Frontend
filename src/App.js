@@ -11,6 +11,7 @@ import Profile from "./pages/profile/Profile.jsx";
 import NewPassword from "./pages/newPassword/NewPassword.jsx";
 import VerifyAccount from "./pages/verifiyAccount/VerifyAccount.jsx";
 import Friends from "./pages/Friends/Friends.jsx";
+import Settings from "./pages/settings/Settings.jsx";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import { useState, useContext } from "react";
 import { AuthContext } from "./context/authentification/AuthContext";
@@ -64,6 +65,10 @@ function App() {
         {
           path: "/friends",
           element: <Friends />,
+        },
+        {
+          path: "/settings",
+          element: <Settings />,
         },
       ],
     },

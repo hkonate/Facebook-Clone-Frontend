@@ -23,7 +23,7 @@ const Friends = () => {
     } catch (error) {
       setLoading((prev) => !prev);
     }
-  }, [user?.AuthTokens]);
+  }, [user?.authTokens]);
 
   useEffect(() => {
     fecthFriends();
@@ -32,7 +32,7 @@ const Friends = () => {
   const handleFollow = async (id) => {
     try {
       setLoading(true);
-      const res = await axios.patch(
+      await axios.patch(
         "http://localhost:3000/user/connections",
         {
           id: id,

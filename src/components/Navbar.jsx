@@ -69,7 +69,6 @@ const Navbar = () => {
       navigate("/login");
       localStorage.removeItem("user");
     } catch (error) {
-      console.log(error);
       setOpen((prev) => !prev);
     }
   };
@@ -85,6 +84,7 @@ const Navbar = () => {
 
   const handleMenuClose = () => {
     setOpen(false);
+    navigate(`settings`);
   };
 
   return (
