@@ -69,7 +69,6 @@ const UpdatePicture = () => {
       setOpen((prev) => !prev);
       setLoading((prev) => !prev);
     } catch (error) {
-      console.log(error);
       //in case is error enable submit btn again
       setError(true);
       setLoading(false);

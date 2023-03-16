@@ -28,8 +28,8 @@ const Feed = () => {
               return new Date(p2.createdAt) - new Date(p1.createdAt);
             })
           );
-        } else {
-          if (res?.data?.data.length > 0) setPosts([res?.data?.data]);
+        } else if (res?.data?.data.length > 0) {
+          setPosts([res?.data?.data]);
         }
         setIsLoading(false);
       };

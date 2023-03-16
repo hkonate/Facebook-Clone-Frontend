@@ -6,61 +6,77 @@ import ProfileFeedSkeleton from "./ProfileFeedSkeleton";
 import { AuthContext } from "../context/authentification/AuthContext";
 import { Box, Typography } from "@mui/material";
 import Banner from "./Banner";
-
 const ProfileFeed = ({ userID }) => {
-  const [posts, setPosts] = React.useState([]);
+  const [posts, setPosts] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [user, setUser] = React.useState(null);
 
   const { user: CurrentUser } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    setIsLoading(true);
-    const fetchPosts = async () => {
-      const res = await axios.get(`http://localhost:3000/post/${userID}`, {
-        headers: {
-          Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
-        },
-      });
-      if (res.data.data.length > 1) {
-        console.log(res.data.data, "hohoh");
-        setPosts(
-          res?.data?.data.sort((p1, p2) => {
-            return new Date(p2.createdAt) - new Date(p1.createdAt);
-          })
-        );
-      } else {
-        setPosts([res?.data?.data]);
-      }
+    try {
+      setIsLoading(true);
+      const fetchPosts = async () => {
+        const res = await axios.get(`http://localhost:3000/post/${userID}`, {
+          headers: {
+            Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
+          },
+        });
+        if (res.data.data.length > 1) {
+          setPosts(
+            res?.data?.data.sort((p1, p2) => {
+              return new Date(p2.createdAt) - new Date(p1.createdAt);
+            })
+          );
+        } else if (res?.data?.data.length > 0) {
+          setPosts([res?.data?.data]);
+        } else if (res?.data?.data.length === 0) {
+          // Fetch the user information for the post
+          const res = await axios.get(`http://localhost:3000/user/${userID}`, {
+            headers: {
+              // Include the user's authentication token in the request headers
+              Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
+            },
+          });
+          setUser(res?.data?.data);
+        }
+        setIsLoading(false);
+      };
+      if (CurrentUser) fetchPosts();
+    } catch (error) {
       setIsLoading(false);
-    };
-    if (CurrentUser) fetchPosts();
+    }
   }, [CurrentUser?._id, CurrentUser?.authTokens]);
-  console.log(CurrentUser, "feed");
+
   return (
     <>
       {isLoading ? (
         <ProfileFeedSkeleton />
-      ) : posts.length === 0 ? (
-        <Box
-          height={"100vh"}
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          (
-          <Typography
-            sx={{
-              color: "silver",
-              fontWeight: "bold",
-              fontSize: "85px",
-              textAlign: "center",
-            }}
+      ) : !posts ? (
+        <>
+          <Banner
+            setUser={setUser}
+            user={user}
+            ownProfile={CurrentUser?._id === userID}
+          />
+          <Box
+            height={"100vh"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
           >
-            NO CONTENT
-          </Typography>
-          )
-        </Box>
+            <Typography
+              sx={{
+                color: "silver",
+                fontWeight: "bold",
+                fontSize: "85px",
+                textAlign: "center",
+              }}
+            >
+              NO CONTENT
+            </Typography>
+          </Box>
+        </>
       ) : (
         <Box sx={{ width: { xs: "100%" } }}>
           <Banner
