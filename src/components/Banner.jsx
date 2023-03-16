@@ -23,8 +23,8 @@ const Banner = ({ user, ownProfile, setUser }) => {
   const handleFollow = async () => {
     try {
       setLoading(true);
-      const res = await axios.patch(
-        "http://localhost:3000/user/connections",
+      await axios.patch(
+        "facebook-clone-backend-production-25dd.up.railway.app/user/connections",
         {
           id: user._id,
           action: "follow",
@@ -46,8 +46,8 @@ const Banner = ({ user, ownProfile, setUser }) => {
   const handleUnfollow = async () => {
     try {
       setLoading(true);
-      const res = await axios.patch(
-        "http://localhost:3000/user/connections",
+      await axios.patch(
+        "facebook-clone-backend-production-25dd.up.railway.app/user/connections",
         {
           id: user._id,
           action: "unfollow",

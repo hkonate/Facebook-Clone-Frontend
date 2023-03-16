@@ -17,11 +17,14 @@ const ProfileFeed = ({ userID }) => {
     try {
       setIsLoading(true);
       const fetchPosts = async () => {
-        const res = await axios.get(`http://localhost:3000/post/${userID}`, {
-          headers: {
-            Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
-          },
-        });
+        const res = await axios.get(
+          `facebook-clone-backend-production-25dd.up.railway.app/post/${userID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
+            },
+          }
+        );
         if (res.data.data.length > 1) {
           setPosts(
             res?.data?.data.sort((p1, p2) => {
@@ -32,12 +35,15 @@ const ProfileFeed = ({ userID }) => {
           setPosts([res?.data?.data]);
         } else if (res?.data?.data.length === 0) {
           // Fetch the user information for the post
-          const res = await axios.get(`http://localhost:3000/user/${userID}`, {
-            headers: {
-              // Include the user's authentication token in the request headers
-              Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
-            },
-          });
+          const res = await axios.get(
+            `facebook-clone-backend-production-25dd.up.railway.app/user/${userID}`,
+            {
+              headers: {
+                // Include the user's authentication token in the request headers
+                Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
+              },
+            }
+          );
           setUser(res?.data?.data);
         }
         setIsLoading(false);
@@ -46,7 +52,7 @@ const ProfileFeed = ({ userID }) => {
     } catch (error) {
       setIsLoading(false);
     }
-  }, [CurrentUser?._id, CurrentUser?.authTokens]);
+  }, [CurrentUser, userID]);
 
   return (
     <>

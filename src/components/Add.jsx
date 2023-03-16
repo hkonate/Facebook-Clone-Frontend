@@ -59,7 +59,7 @@ const Add = ({ posts, setPosts }) => {
 
       //create new post
       const res = await axios.post(
-        "http://localhost:3000/post/create",
+        "facebook-clone-backend-production-25dd.up.railway.app/post/create",
         formdata,
         {
           headers: {

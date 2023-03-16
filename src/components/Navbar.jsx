@@ -58,11 +58,14 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       // Make a DELETE request to the server to logout the user
-      await axios.delete("http://localhost:3000/user/logout", {
-        headers: {
-          Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
-        },
-      });
+      await axios.delete(
+        "facebook-clone-backend-production-25dd.up.railway.app/user/logout",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
+          },
+        }
+      );
 
       // Close the menu, navigate to the login page, and remove user info from local storage
       setOpen((prev) => !prev);

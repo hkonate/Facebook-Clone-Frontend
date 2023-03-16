@@ -83,11 +83,15 @@ const Register = () => {
       formdata.append("img", e.target[3].files[0]);
 
       //send formdata info in order to pre-register user
-      const res = await axios.post("http://localhost:3000/register", formdata, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        "facebook-clone-backend-production-25dd.up.railway.app/register",
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       //user has been pre-register and mail of verification has been sent, end loading and move to verificationAcount page
       setIsFetching((prev) => !prev);

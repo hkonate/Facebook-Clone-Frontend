@@ -16,11 +16,14 @@ const Feed = () => {
     try {
       setIsLoading(true);
       const fetchPosts = async () => {
-        const res = await axios.get("http://localhost:3000/feed", {
-          headers: {
-            Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
-          },
-        });
+        const res = await axios.get(
+          "facebook-clone-backend-production-25dd.up.railway.app/feed",
+          {
+            headers: {
+              Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
+            },
+          }
+        );
 
         if (res.data.data.length > 1) {
           setPosts(
@@ -35,7 +38,7 @@ const Feed = () => {
       };
       if (CurrentUser) fetchPosts();
     } catch (error) {}
-  }, [CurrentUser?._id, CurrentUser?.authTokens]);
+  }, [CurrentUser]);
   return (
     <>
       {isLoading ? (

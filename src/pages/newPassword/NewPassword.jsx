@@ -45,11 +45,14 @@ const NewPassword = () => {
     if (error) setError(false);
     try {
       //active account
-      await axios.post(`http://localhost:3000/newPassword/${user.id}`, {
-        otp: e.target[1].value,
-        password: e.target[2].value,
-        confirmPassword: e.target[4].value,
-      });
+      await axios.post(
+        `facebook-clone-backend-production-25dd.up.railway.app/newPassword/${user.id}`,
+        {
+          otp: e.target[1].value,
+          password: e.target[2].value,
+          confirmPassword: e.target[4].value,
+        }
+      );
       //active the popper because the account has been active
       setOpen(true);
       //time the popper and navigate to login
@@ -71,7 +74,7 @@ const NewPassword = () => {
     try {
       //send another code by mail
       const { data } = await axios.post(
-        `http://localhost:3000/password/otpResend`,
+        `facebook-clone-backend-production-25dd.up.railway.app/password/otpResend`,
         {
           email: emailRef.current.children[1].children[0].value,
         }

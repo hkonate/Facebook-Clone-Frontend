@@ -30,9 +30,12 @@ const VerifyAccount = () => {
     if (error) setError(false);
     try {
       //active account
-      await axios.post(`http://localhost:3000/otpVerification/${user.id}`, {
-        otp: e.target[1].value,
-      });
+      await axios.post(
+        `facebook-clone-backend-production-25dd.up.railway.app/otpVerification/${user.id}`,
+        {
+          otp: e.target[1].value,
+        }
+      );
       //active the popper because the account has been active
       setOpen(true);
       //time the popper and navigate to login
@@ -53,9 +56,12 @@ const VerifyAccount = () => {
     if (error) setError(false);
     try {
       //send another code by mail
-      const { data } = await axios.post("http://localhost:3000/otpResend", {
-        email: emailRef.current.children[1].children[0].value,
-      });
+      const { data } = await axios.post(
+        "facebook-clone-backend-production-25dd.up.railway.app/otpResend",
+        {
+          email: emailRef.current.children[1].children[0].value,
+        }
+      );
       //display the popper because a new code has been sent
       setSend(true);
       //time the popper

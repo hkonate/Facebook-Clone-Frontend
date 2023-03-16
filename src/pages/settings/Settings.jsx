@@ -21,11 +21,14 @@ const Settings = () => {
     try {
       setLoading((prev) => !prev);
       // Make a DELETE request to the server to logout the user
-      await axios.delete("http://localhost:3000/user/logout", {
-        headers: {
-          Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
-        },
-      });
+      await axios.delete(
+        "facebook-clone-backend-production-25dd.up.railway.app/user/logout",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
+          },
+        }
+      );
 
       // Navigate to the login page, and remove user info from local storage
 
@@ -42,11 +45,14 @@ const Settings = () => {
     try {
       setLoading((prev) => !prev);
       //Delete all user's devices
-      await axios.post("http://localhost:3000/user/logout/all", {
-        headers: {
-          Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
-        },
-      });
+      await axios.post(
+        "facebook-clone-backend-production-25dd.up.railway.app/user/logout/all",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
+          },
+        }
+      );
 
       // Navigate to the login page, and remove user info from local storage
 
@@ -65,11 +71,14 @@ const Settings = () => {
       setLoading((prev) => !prev);
 
       //Delete users account
-      await axios.delete("http://localhost:3000/user/delete", {
-        headers: {
-          Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
-        },
-      });
+      await axios.delete(
+        "facebook-clone-backend-production-25dd.up.railway.app/user/delete",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
+          },
+        }
+      );
 
       // Navigate to the register page, and remove user info from local storage
 

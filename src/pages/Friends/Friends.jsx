@@ -13,11 +13,14 @@ const Friends = () => {
   const fecthFriends = useCallback(async () => {
     try {
       setLoading((prev) => !prev);
-      const res = await axios.get("http://localhost:3000/users", {
-        headers: {
-          Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
-        },
-      });
+      const res = await axios.get(
+        "facebook-clone-backend-production-25dd.up.railway.app/users",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
+          },
+        }
+      );
       setFriends(res.data);
       setLoading((prev) => !prev);
     } catch (error) {
@@ -33,7 +36,7 @@ const Friends = () => {
     try {
       setLoading(true);
       await axios.patch(
-        "http://localhost:3000/user/connections",
+        "facebook-clone-backend-production-25dd.up.railway.app/user/connections",
         {
           id: id,
           action: "follow",

@@ -42,7 +42,7 @@ const Login = () => {
   const handlePassword = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/password/Reset",
+        "facebook-clone-backend-production-25dd.up.railway.app/password/Reset",
         { email: emailRef.current.children[0].children[0].value }
       );
       navigate(`/newPassword/${data.data._id}`);
