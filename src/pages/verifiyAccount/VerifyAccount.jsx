@@ -57,7 +57,7 @@ const VerifyAccount = () => {
     try {
       //send another code by mail
       const { data } = await axios.post(
-        "facebook-clone-backend-production.up.railway.app/otpResend",
+        "https://facebook-clone-backend-production.up.railway.app/otpResend",
         {
           email: emailRef.current.children[1].children[0].value,
         }

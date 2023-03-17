@@ -27,10 +27,7 @@ const Post = ({ post, setPosts, posts }) => {
   const [anchorEl, setAnchorEl] = useState(null); // Anchor element for the delete post menu
   const [capitalizeName, setCapitalizeName] = useState(null); // Capitalized name of the user who created the post
   const [like, setLike] = useState(post ? post?.likes?.length : 0); // Number of likes for this post
-  const [isLiked, setIsLiked] = useState(
-    // Whether the current user has liked this post
-    post?.likes?.includes(currentUser?._id)
-  );
+  const [isLiked, setIsLiked] = useState(null);
 
   // Get the navigation function from react-router-dom
   const navigate = useNavigate();
@@ -47,7 +44,7 @@ const Post = ({ post, setPosts, posts }) => {
         // Else if the user state already exists and is not the post creator, do not fetch again. Otherwise, fetch the user data.
         else if ((user && user._id !== post?.userId) || !user) {
           const res = await axios.get(
-            `facebook-clone-backend-production.up.railway.app/user/${post?.userId}`,
+            `https://facebook-clone-backend-production.up.railway.app/user/${post?.userId}`,
             {
               headers: {
                 // Include the user's authentication token in the request headers
@@ -57,7 +54,7 @@ const Post = ({ post, setPosts, posts }) => {
           );
           setUser(res.data.data);
         }
-        setIsLiked(post?.likes?.length);
+        setIsLiked(post?.likes?.includes(currentUser?._id));
       } catch (error) {}
     };
     // If a post exists, fetch user information for that post
@@ -82,7 +79,7 @@ const Post = ({ post, setPosts, posts }) => {
   const likeHandler = async () => {
     try {
       await axios.post(
-        `facebook-clone-backend-production.up.railway.app/post/affinities/${post?._id}`,
+        `https://facebook-clone-backend-production.up.railway.app/post/affinities/${post?._id}`,
         null,
         {
           headers: {
@@ -91,9 +88,9 @@ const Post = ({ post, setPosts, posts }) => {
           },
         }
       );
+      setIsLiked((prevIsLiked) => !prevIsLiked);
+      setLike(isLiked ? like - 1 : like + 1);
     } catch (err) {}
-    setLike(isLiked ? like - 1 : like + 1);
-    setIsLiked((prevIsLiked) => !prevIsLiked);
   };
 
   // Function to send a request to delete a post
@@ -101,7 +98,7 @@ const Post = ({ post, setPosts, posts }) => {
     try {
       // Send a DELETE request to the server to delete the post with the specified ID
       await axios.delete(
-        `facebook-clone-backend-production.up.railway.app/post/delete/${postId}`,
+        `https://facebook-clone-backend-production.up.railway.app/post/delete/${postId}`,
         {
           headers: {
             // Include the user's authentication token in the request headers
@@ -223,7 +220,7 @@ const Post = ({ post, setPosts, posts }) => {
         </IconButton>
         <CardContent sx={{ mt: "5px" }}>
           <Typography variant="body2" color="text.secondary" fontSize={"16px"}>
-            {like + (post?.likes?.length > 0 ? " Likes" : " Like")}
+            {like + (post?.likes?.length > 1 ? " Likes" : " Like")}
           </Typography>
         </CardContent>
       </CardActions>

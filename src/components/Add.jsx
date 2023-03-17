@@ -59,7 +59,7 @@ const Add = ({ posts, setPosts }) => {
 
       //create new post
       const res = await axios.post(
-        "facebook-clone-backend-production.up.railway.app/post/create",
+        "https://facebook-clone-backend-production.up.railway.app/post/create",
         formdata,
         {
           headers: {

@@ -18,7 +18,7 @@ const ProfileFeed = ({ userID }) => {
       setIsLoading(true);
       const fetchPosts = async () => {
         const res = await axios.get(
-          `facebook-clone-backend-production.up.railway.app/post/${userID}`,
+          `https://facebook-clone-backend-production.up.railway.app/post/${userID}`,
           {
             headers: {
               Authorization: `Bearer ${CurrentUser?.authTokens[0][0].authToken}`,
@@ -36,7 +36,7 @@ const ProfileFeed = ({ userID }) => {
         } else if (res?.data?.data.length === 0) {
           // Fetch the user information for the post
           const res = await axios.get(
-            `facebook-clone-backend-production.up.railway.app/user/${userID}`,
+            `https://facebook-clone-backend-production.up.railway.app/user/${userID}`,
             {
               headers: {
                 // Include the user's authentication token in the request headers

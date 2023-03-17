@@ -4,7 +4,7 @@ export const loginCall = async ({ email, password }, dispatch) => {
   dispatch({ type: "LOGIN_START" });
   try {
     const res = await axios.post(
-      "facebook-clone-backend-production-25dd.up.railway.app/login",
+      "https://facebook-clone-backend-production.up.railway.app/login",
       {
         email,
         password,

@@ -49,17 +49,19 @@ const UserBox = styled(Box)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
-
+  const [anchorEl, setAnchorEl] = useState(null); // Anchor element for the delete post menu
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Check if the delete post menu is open
+  const open = Boolean(anchorEl);
 
   // Handle logout
   const handleLogout = async () => {
     try {
       // Make a DELETE request to the server to logout the user
       await axios.delete(
-        "facebook-clone-backend-production.up.railway.app/user/logout",
+        "https://facebook-clone-backend-production.up.railway.app/user/logout",
         {
           headers: {
             Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
@@ -68,25 +70,28 @@ const Navbar = () => {
       );
 
       // Close the menu, navigate to the login page, and remove user info from local storage
-      setOpen((prev) => !prev);
+      setAnchorEl(null);
       navigate("/login");
       localStorage.removeItem("user");
     } catch (error) {
-      setOpen((prev) => !prev);
+      setAnchorEl(null);
     }
   };
 
   const handleProfileClick = () => {
-    setOpen((prev) => !prev);
+    setAnchorEl(null);
     navigate(`profile/${user._id}`);
   };
 
-  const handleMenuOpen = () => {
-    setOpen(true);
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const handleMenuClose = () => {
-    setOpen(false);
+    setAnchorEl(null);
     navigate(`settings`);
   };
 
@@ -117,12 +122,12 @@ const Navbar = () => {
             <Notifications />
           </Badge>
           <Avatar
-            sx={{ width: 30, height: 30 }}
+            sx={{ width: 30, height: 30, cursor: "pointer" }}
             src={user?.profilePicture}
             onClick={handleMenuOpen}
           />
         </Icons>
-        <UserBox onClick={handleMenuOpen}>
+        <UserBox onClick={(e) => handleMenuOpen(e)}>
           <Avatar sx={{ width: 30, height: 30 }} src={user?.profilePicture} />
           <Typography variant="span" textTransform={"capitalize"}>
             {user?.firstname}
@@ -132,13 +137,11 @@ const Navbar = () => {
       <Menu
         aria-labelledby="demo-positioned-button"
         open={open}
+        onClose={handleClose}
+        anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: "bottom",
+          horizontal: "left",
         }}
       >
         <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
