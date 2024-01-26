@@ -43,7 +43,7 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
         // Else if the user state already exists and is not the post creator, do not fetch again. Otherwise, fetch the user data.
         else if ((user && user?._id !== post?.userId) || !user) {
           const res = await axios.get(
-            `https://facebook-clone-backend-production.up.railway.app/user/${post?.userId}`,
+            `https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/user/${post?.userId}`,
             {
               headers: {
                 // Include the user's authentication token in the request headers
@@ -79,7 +79,7 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
   const likeHandler = async () => {
     try {
       await axios.post(
-        `https://facebook-clone-backend-production.up.railway.app/post/affinities/${post?._id}`,
+        `https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/post/affinities/${post?._id}`,
         null,
         {
           headers: {
@@ -98,7 +98,7 @@ const ProfilePost = ({ post, setPosts, posts, setUser, user }) => {
     try {
       // Send a DELETE request to the server to delete the post with the specified ID
       await axios.delete(
-        `https://facebook-clone-backend-production.up.railway.app/post/delete/${postId}`,
+        `https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/post/delete/${postId}`,
         {
           headers: {
             // Include the user's authentication token in the request headers

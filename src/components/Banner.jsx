@@ -24,7 +24,7 @@ const Banner = ({ user, ownProfile, setUser }) => {
     try {
       setLoading(true);
       await axios.patch(
-        "https://facebook-clone-backend-production.up.railway.app/user/connections",
+        "https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/user/connections",
         {
           id: user._id,
           action: "follow",
@@ -47,7 +47,7 @@ const Banner = ({ user, ownProfile, setUser }) => {
     try {
       setLoading(true);
       await axios.patch(
-        "https://facebook-clone-backend-production.up.railway.app/user/connections",
+        "https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/user/connections",
         {
           id: user._id,
           action: "unfollow",

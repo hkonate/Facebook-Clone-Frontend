@@ -14,7 +14,7 @@ const Friends = () => {
     try {
       setLoading((prev) => !prev);
       const res = await axios.get(
-        "https://facebook-clone-backend-production.up.railway.app/users",
+        "https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/users",
         {
           headers: {
             Authorization: `Bearer ${user?.authTokens[0][0].authToken}`,
@@ -36,7 +36,7 @@ const Friends = () => {
     try {
       setLoading(true);
       await axios.patch(
-        "https://facebook-clone-backend-production.up.railway.app/user/connections",
+        "https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/user/connections",
         {
           id: id,
           action: "follow",

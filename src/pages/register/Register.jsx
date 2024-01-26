@@ -84,7 +84,7 @@ const Register = () => {
 
       //send formdata info in order to pre-register user
       const res = await axios.post(
-        "https://facebook-clone-backend-production.up.railway.app/register",
+        "https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/register",
         formdata,
         {
           headers: {

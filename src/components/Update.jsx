@@ -61,7 +61,7 @@ const Update = () => {
         return;
       }
       const res = await axios.patch(
-        "https://facebook-clone-backend-production.up.railway.app/user/update",
+        "https://facebook-clone-backend-dev-tzqz.1.ie-1.fl0.io/user/update",
         formdata,
         {
           headers: {
