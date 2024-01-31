@@ -108,7 +108,7 @@ const NewPassword = () => {
           display: "flex",
           flexDirection: { xs: "column", sm: "column", md: "column" },
           backgroundColor: "white",
-          height: { xs: "100%", sm: "100%", md: "70%", lg: "70%" },
+          height: { xs: "100%", sm: "100%", md: "90%", lg: "90%" },
           width: "40%",
         }}
       >
